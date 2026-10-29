@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>色彩検定2級 予想問題＆模擬テスト 学習サイト</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --bg-page: #F4F6F9;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #F8FAFC;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --primary-light: #EFF6FF;
+      --success: #059669;
+      --success-bg: #ECFDF5;
+      --danger: #DC2626;
+      --danger-bg: #FEF2F2;
+      --warning: #D97706;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.07);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", "Meiryo", sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .site-header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .color-spectrum-bar {
+      height: 5px;
+      background: linear-gradient(90deg, #E60027 0%, #F67800 18%, #FFE100 35%, #00A354 52%, #008F99 68%, #0F52BA 84%, #911489 100%);
+    }
+
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #1E293B, #334155);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 4px 9px;
+      border-radius: 6px;
+    }
+
+    .brand-title { font-size: 1.1rem; font-weight: 800; color: var(--text-main); }
+    .brand-sub { font-size: 0.75rem; color: var(--text-muted); display: block; }
+
+    .main-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .nav-tab-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      font-weight: 600;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .nav-tab-btn:hover { background: var(--bg-subtle); color: var(--text-main); }
+    .nav-tab-btn.active { background: var(--primary-light); color: var(--primary); border-color: #BFDBFE; }
+
+    .main-container {
+      max-width: 1080px;
+      width: 100%;
+      margin: 20px auto 40px;
+      padding: 0 18px;
+      flex: 1;
+    }
+
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    /* スウォッチ描画 */
+    .swatch-strip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.08);
+      background: #FFFFFF;
+      flex-shrink: 0;
+    }
+    .color-swatch-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 700;
+      text-align: center;
+      padding: 4px 6px;
+      user-select: none;
+    }
+    .color-swatch-card + .color-swatch-card { border-left: 1px solid rgba(255, 255, 255, 0.25); }
+    .swatch-sm { width: 54px; height: 34px; font-size: 0.75rem; }
+    .swatch-md { width: 70px; height: 44px; font-size: 0.82rem; }
+    .swatch-lg { width: 90px; height: 58px; font-size: 0.9rem; }
+    .swatch-xl { width: 108px; height: 72px; font-size: 0.95rem; }
+    .swatch-code { line-height: 1.1; }
+    .swatch-sub { font-size: 0.68rem; opacity: 0.88; margin-top: 2px; }
+
+    .prompt-swatch-box {
+      background: #F1F5F9;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: center;
+    }
+    .prompt-swatch-group { display: flex; flex-direction: column; gap: 5px; }
+    .prompt-swatch-label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); }
+
+    /* ダッシュボード */
+    .hero-banner {
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      color: #FFFFFF;
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      box-shadow: var(--shadow-md);
+    }
+    .hero-text h2 { font-size: 1.35rem; margin-bottom: 4px; font-weight: 800; }
+    .hero-text p { color: #CBD5E1; font-size: 0.88rem; }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+    .stat-value { font-size: 1.5rem; font-weight: 800; margin-top: 4px; color: var(--text-main); }
+    .mini-bar { height: 6px; background: #E2E8F0; border-radius: 99px; margin-top: 8px; overflow: hidden; }
+    .mini-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+
+    .section-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .section-header-row h3 { font-size: 1.08rem; font-weight: 700; }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .cat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .cat-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .cat-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .cat-icon {
+      font-size: 1.5rem;
+      background: var(--bg-subtle);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+    }
+    .cat-title { font-size: 0.96rem; font-weight: 700; }
+    .cat-count { font-size: 0.75rem; color: var(--text-muted); }
+    .cat-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
+    .cat-progress-wrap { display: flex; align-items: center; gap: 10px; }
+    .cat-progress-bar { flex: 1; height: 8px; background: #E2E8F0; border-radius: 99px; overflow: hidden; }
+    .cat-progress-fill { height: 100%; background: linear-gradient(90deg, #2563EB, #06B6D4); }
+    .cat-pct { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); min-width: 34px; text-align: right; }
+
+    /* 練習モード */
+    .practice-toolbar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .toolbar-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .select-input {
+      padding: 7px 10px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      background: #FFF;
+      color: var(--text-main);
+    }
+    .checkbox-label { display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; cursor: pointer; user-select: none; }
+
+    .question-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-md);
+    }
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .q-meta-left, .q-meta-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .q-cat-badge { background: var(--primary-light); color: var(--primary); font-size: 0.78rem; font-weight: 700; padding: 3px 9px; border-radius: 6px; }
+    .q-visual-badge { background: #FEF3C7; color: #B45309; font-size: 0.76rem; font-weight: 700; padding: 3px 9px; border-radius: 6px; }
+    .q-status-tag { font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+    .tag-new { background: #F1F5F9; color: #64748B; }
+    .tag-ok  { background: var(--success-bg); color: var(--success); }
+    .tag-ng  { background: var(--danger-bg); color: var(--danger); }
+    .q-id-pill { font-size: 0.76rem; background: #E2E8F0; color: #334155; padding: 2px 7px; border-radius: 5px; margin-right: 6px; }
+
+    .question-title { font-size: 1.08rem; font-weight: 700; margin-bottom: 18px; line-height: 1.6; }
+    .options-list { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      background: var(--bg-subtle);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.14s ease;
+      font-size: 0.94rem;
+      color: var(--text-main);
+    }
+    .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #F0F7FF; }
+    .option-main { display: flex; align-items: center; gap: 10px; }
+    .opt-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: #334155;
+      font-weight: 800;
+      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .option-btn.opt-selected { border-color: var(--primary); background: var(--primary-light); }
+    .opt-num-selected { background: var(--primary); color: #FFF; }
+    .option-btn.opt-correct { border-color: var(--success); background: var(--success-bg); }
+    .opt-num-correct { background: var(--success); color: #FFF; }
+    .option-btn.opt-wrong { border-color: var(--danger); background: var(--danger-bg); }
+    .opt-num-wrong { background: var(--danger); color: #FFF; }
+    .option-btn.opt-dimmed { opacity: 0.65; }
+
+    .explanation-box {
+      margin-top: 20px;
+      padding: 18px 20px;
+      border-radius: var(--radius-md);
+      border-left: 5px solid var(--primary);
+      background: #F8FAFC;
+    }
+    .explanation-box.exp-correct { border-left-color: var(--success); background: #F0FDF4; }
+    .explanation-box.exp-wrong { border-left-color: var(--danger); background: #FEF2F2; }
+    .exp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+    .exp-result-badge { font-size: 1rem; font-weight: 800; }
+    .exp-body {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: #1E293B;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .exp-body code { background: #E2E8F0; padding: 2px 5px; border-radius: 4px; font-weight: 700; }
+    .exp-actions, .practice-nav-footer { margin-top: 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .hint-text { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* 模試 */
+    .exam-setup-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow-md); }
+    .exam-setup-header h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+    .exam-setup-header p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+    .exam-preset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .preset-card { border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; cursor: pointer; background: var(--bg-subtle); display: block; }
+    .preset-card.selected { border-color: var(--primary); background: var(--primary-light); }
+    .preset-badge { display: inline-block; font-size: 0.75rem; font-weight: 700; background: #1E293B; color: #FFF; padding: 2px 8px; border-radius: 99px; margin-bottom: 6px; }
+    .preset-card h3 { font-size: 1.02rem; font-weight: 700; margin-bottom: 8px; }
+    .preset-specs { display: flex; flex-direction: column; gap: 4px; font-size: 0.82rem; color: var(--text-muted); }
+    .exam-options-row { padding: 12px 14px; background: #F8FAFC; border-radius: 8px; margin-bottom: 20px; }
+    .exam-top-bar { background: #1E293B; color: #FFF; border-radius: var(--radius-md); padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+    .exam-timer-box strong { font-size: 1.2rem; font-family: ui-monospace, monospace; color: #38BDF8; margin-left: 6px; }
+    .exam-palette-bar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 14px; }
+    .pal-label { font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 6px; }
+    .pal-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+    .pal-btn { width: 32px; height: 32px; border-radius: 6px; border: 1px solid #CBD5E1; background: #F8FAFC; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+    .pal-btn.pal-answered { background: #DBEAFE; border-color: #60A5FA; color: #1E40AF; }
+    .pal-btn.pal-current { outline: 2px solid #1E293B; font-weight: 900; }
+    .pal-btn.pal-flagged { border-color: #F59E0B; background: #FEF3C7; }
+    .exam-question-nav { margin-top: 18px; display: flex; justify-content: space-between; }
+
+    .result-hero { border-radius: var(--radius-lg); padding: 26px; text-align: center; margin-bottom: 20px; border: 2px solid; }
+    .hero-pass { background: linear-gradient(135deg, #ECFDF5, #D1FAE5); border-color: #10B981; }
+    .hero-fail { background: linear-gradient(135deg, #FFFBEB, #FEF3C7); border-color: #F59E0B; }
+    .result-badge-lg { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; }
+    .score-num { font-size: 2.8rem; font-weight: 900; }
+    .result-hero-actions { margin-top: 14px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .result-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; }
+    .result-section h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; }
+    .result-cat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .result-cat-name { width: 165px; font-size: 0.84rem; font-weight: 600; }
+    .result-cat-bar-wrap { flex: 1; height: 10px; background: #E2E8F0; border-radius: 99px; overflow: hidden; }
+    .result-cat-bar { height: 100%; }
+    .bar-good { background: var(--success); }
+    .bar-weak { background: var(--warning); }
+    .result-cat-score { width: 90px; text-align: right; font-size: 0.82rem; font-weight: 700; }
+    .review-list { display: flex; flex-direction: column; gap: 12px; }
+    .review-item { border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; background: var(--bg-subtle); }
+    .review-item-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .rev-badge { font-size: 0.76rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; }
+    .rev-badge-ok { background: var(--success-bg); color: var(--success); }
+    .rev-badge-ng { background: var(--danger-bg); color: var(--danger); }
+    .rev-question { font-weight: 700; font-size: 0.92rem; margin-bottom: 6px; }
+    .rev-choices-compare { font-size: 0.84rem; margin-bottom: 8px; padding: 8px 10px; background: #FFF; border-radius: 6px; }
+    .rev-explanation { font-size: 0.84rem; color: #334155; border-top: 1px dashed #CBD5E1; padding-top: 6px; }
+
+    /* ラボ */
+    .lab-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .lab-panel, .lab-harmony-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); }
+    .lab-panel h3, .lab-harmony-panel h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .lab-hint { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
+    .wheel-wrap { display: flex; justify-content: center; }
+    .pccs-wheel-svg { width: 100%; max-width: 320px; height: auto; }
+    .tone-map-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 34px; gap: 7px; padding: 10px; background: #F8FAFC; border-radius: var(--radius-md); margin-bottom: 14px; }
+    .tone-circle-btn { border: 2px solid rgba(255,255,255,0.8); border-radius: 9px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.12); grid-row-end: span 2; }
+    .tone-circle-btn.tone-selected { outline: 3px solid #1E293B; }
+    .t-code { font-weight: 800; font-size: 0.85rem; line-height: 1; }
+    .t-mod { font-size: 0.72rem; opacity: 0.9; }
+    .selected-color-detail { display: flex; align-items: center; gap: 12px; background: #F1F5F9; padding: 10px 12px; border-radius: 10px; }
+    .detail-chip { width: 58px; height: 58px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.98rem; border: 2px solid #FFF; flex-shrink: 0; }
+    .detail-meta { font-size: 0.82rem; line-height: 1.5; }
+    .harmony-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 14px; }
+    .harmony-tab-btn { padding: 6px 11px; border-radius: 99px; border: 1px solid #CBD5E1; background: #F8FAFC; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .harmony-tab-btn.active { background: var(--primary); color: #FFF; border-color: var(--primary); }
+    .harmony-showcase { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; background: #F8FAFC; padding: 16px; border-radius: var(--radius-md); }
+    .harmony-desc-box { flex: 1; min-width: 240px; font-size: 0.88rem; }
+    .harmony-desc-box h4 { font-size: 0.98rem; font-weight: 700; margin-bottom: 4px; }
+
+    .btn-primary { background: var(--primary); color: #FFF; border: none; padding: 9px 16px; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #E2E8F0; color: #1E293B; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 600; font-size: 0.84rem; cursor: pointer; }
+    .btn-secondary:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-submit-exam { background: #10B981; color: #FFF; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.86rem; cursor: pointer; }
+    .btn-bookmark, .btn-bookmark-sm { background: #FFF; border: 1px solid #CBD5E1; padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+    .btn-bookmark.active, .btn-bookmark-sm.active { background: #FEF3C7; border-color: #F59E0B; color: #B45309; }
+
+    .history-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); }
+    .history-table th, .history-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.86rem; }
+    .history-table th { background: #F8FAFC; font-weight: 700; }
+    .badge-pass { background: var(--success-bg); color: var(--success); padding: 2px 7px; border-radius: 6px; font-weight: 700; font-size: 0.76rem; }
+    .badge-fail { background: #FEF3C7; color: #B45309; padding: 2px 7px; border-radius: 6px; font-weight: 700; font-size: 0.76rem; }
+    .empty-note { color: var(--text-muted); font-size: 0.86rem; padding: 14px; background: var(--bg-card); border-radius: 8px; border: 1px solid var(--border-color); }
+    .empty-card { background: var(--bg-card); padding: 28px; border-radius: 12px; text-align: center; border: 1px solid var(--border-color); }
+    .empty-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .empty-card p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px; }
+    .site-footer { text-align: center; padding: 16px; font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border-color); background: var(--bg-card); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="color-spectrum-bar"></div>
+    <div class="header-inner">
+      <div class="brand-area" onclick="switchTab('dashboard')">
+        <span class="brand-badge">AFT 2級対策</span>
+        <div>
+          <span class="brand-title">色彩検定2級 予想問題＆模擬テスト</span>
+          <span class="brand-sub">PCCS配色カード視覚問題・分野別一問一答・本番タイマー模試</span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">📊 学習ホーム</button>
+        <button class="nav-tab-btn" data-tab="practice" onclick="switchTab('practice')">📖 分野別・一問一答</button>
+        <button class="nav-tab-btn" data-tab="exam" onclick="switchTab('exam')">⏱️ 予想模擬テスト</button>
+        <button class="nav-tab-btn" data-tab="lab" onclick="switchTab('lab')">🎨 PCCS色相環・トーン図鑑</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- 1. ダッシュボード -->
+    <section id="view-dashboard" class="view-section active">
+      <div class="hero-banner">
+        <div class="hero-text">
+          <h2>色彩検定2級（実務・応用レベル）完全攻略</h2>
+          <p>公式テキスト準拠の全6分野・厳選60問！PCCS配色スウォッチを使った視覚問題と本番形式の模擬テストで合格力を養成します。</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="switchTab('practice', { filterCategory: 'visual' })">🎨 配色スウォッチ問題を解く</button>
+          <button class="btn-primary" style="background:#10B981;" onclick="switchTab('exam')">⏱️ 予想模擬テストに挑戦</button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">学習進捗（解答済み問題）</div>
+          <div class="stat-value" id="stat-progress">0 / 60 問</div>
+          <div class="mini-bar"><div class="mini-bar-fill" id="stat-progress-bar"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">現在の総合正答率</div>
+          <div class="stat-value" id="stat-accuracy">0%</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">要復習（間違えた問題）</div>
+          <div class="stat-value" id="stat-wrong-count">0 問</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">模擬テスト最高スコア</div>
+          <div class="stat-value" id="stat-best-exam">未受験</div>
+        </div>
+      </div>
+
+      <div class="section-header-row">
+        <h3>📚 分野別 予想問題トレーニング（カードをクリックして開始）</h3>
+        <button class="btn-secondary" onclick="switchTab('practice', { filterCategory: 'wrong' })">★ 要復習・ブックマーク問題だけ解く</button>
+      </div>
+      <div id="dashboard-category-grid" class="category-grid"></div>
+
+      <div class="section-header-row">
+        <h3>🏆 最近の予想模擬テスト結果</h3>
+        <button class="btn-secondary" onclick="resetAllProgress()">履歴をリセット</button>
+      </div>
+      <div id="dashboard-exam-history"></div>
+    </section>
+
+    <!-- 2. 一問一答 -->
+    <section id="view-practice" class="view-section">
+      <div class="practice-toolbar">
+        <div class="toolbar-group">
+          <label for="practice-category-select"><strong>出題範囲：</strong></label>
+          <select id="practice-category-select" class="select-input" onchange="onPracticeFilterChange()">
+            <option value="all">全分野（全60問）</option>
+            <option value="visual">🎨 視覚スウォッチ・配色カード問題のみ</option>
+            <option value="wrong">🔥 間違えた問題・ブックマーク復習</option>
+            <option value="unanswered">✨ 未解答の問題のみ</option>
+            <option value="harmony">🎨 1. 色彩調和と配色技法</option>
+            <option value="light">💡 2. 光と色・照明・表色系</option>
+            <option value="ud">👁️ 3. 色のユニバーサルデザイン</option>
+            <option value="perception">🌀 4. 色彩心理と視覚効果</option>
+            <option value="design">🏠 5. ファッション・インテリア・景観</option>
+            <option value="history">📜 6. 色彩の歴史と調和論</option>
+          </select>
+        </div>
+
+        <div class="toolbar-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="practice-blind-toggle" onchange="togglePracticeBlindOnly()">
+            <span>👁️ 配色カードの記号を隠す（実技ブラインド）</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="practice-shuffle-toggle" onchange="onPracticeFilterChange()">
+            <span>🔀 順番シャッフル</span>
+          </label>
+        </div>
+      </div>
+
+      <div id="practice-question-container"></div>
+    </section>
+
+    <!-- 3. 予想模擬テスト -->
+    <section id="view-exam" class="view-section">
+      <div id="exam-container"></div>
+    </section>
+
+    <!-- 4. PCCS ラボ -->
+    <section id="view-lab" class="view-section">
+      <div id="lab-container"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    色彩検定2級 予想問題＆模擬テスト 学習サポートサイト
+  </footer>
+
+  <script>
+    // PCCS 24色相・トーンデータ
+    const PCCS_HUES = {
+      1:  { num: 1,  code: '1:pR',  name: '紫みの赤',     munsell: '10RP', h: 340 },
+      2:  { num: 2,  code: '2:R',   name: '赤',           munsell: '4R',   h: 350 },
+      3:  { num: 3,  code: '3:yR',  name: '黄みの赤',     munsell: '7R',   h: 11  },
+      4:  { num: 4,  code: '4:rO',  name: '赤みの橙',     munsell: '10R',  h: 22  },
+      5:  { num: 5,  code: '5:O',   name: '橙',           munsell: '4YR',  h: 29  },
+      6:  { num: 6,  code: '6:yO',  name: '黄みの橙',     munsell: '8YR',  h: 38  },
+      7:  { num: 7,  code: '7:rY',  name: '赤みの黄',     munsell: '2Y',   h: 45  },
+      8:  { num: 8,  code: '8:Y',   name: '黄',           munsell: '5Y',   h: 53  },
+      9:  { num: 9,  code: '9:gY',  name: '緑みの黄',     munsell: '9Y',   h: 63  },
+      10: { num: 10, code: '10:YG', name: '黄緑',         munsell: '3GY',  h: 74  },
+      11: { num: 11, code: '11:yG', name: '黄みの緑',     munsell: '7GY',  h: 105 },
+      12: { num: 12, code: '12:G',  name: '緑',           munsell: '3G',   h: 151 },
+      13: { num: 13, code: '13:bG', name: '青みの緑',     munsell: '8G',   h: 167 },
+      14: { num: 14, code: '14:BG', name: '青緑',         munsell: '4BG',  h: 184 },
+      15: { num: 15, code: '15:BG', name: '青緑(15:BG)',  munsell: '9BG',  h: 194 },
+      16: { num: 16, code: '16:gB', name: '緑みの青',     munsell: '5B',   h: 203 },
+      17: { num: 17, code: '17:B',  name: '青',           munsell: '10B',  h: 210 },
+      18: { num: 18, code: '18:B',  name: '青(18:B)',     munsell: '3PB',  h: 216 },
+      19: { num: 19, code: '19:pB', name: '紫みの青',     munsell: '6PB',  h: 230 },
+      20: { num: 20, code: '20:V',  name: '青紫',         munsell: '9PB',  h: 259 },
+      21: { num: 21, code: '21:bP', name: '青みの紫',     munsell: '3P',   h: 282 },
+      22: { num: 22, code: '22:P',  name: '紫',           munsell: '7P',   h: 304 },
+      23: { num: 23, code: '23:rP', name: '赤みの紫',     munsell: '1RP',  h: 321 },
+      24: { num: 24, code: '24:RP', name: '赤紫',         munsell: '5RP',  h: 332 }
+    };
+
+    const PCCS_TONES = {
+      v:   { code: 'v',   name: 'ビビッド',         modifier: '冴えた',       sScale: 1.0,  x: 4, y: 2.5, category: '純色系' },
+      b:   { code: 'b',   name: 'ブライト',         modifier: '明るい',       sScale: 0.88, x: 3, y: 1.5, category: '明清色系' },
+      s:   { code: 's',   name: 'ストロング',       modifier: '強い',         sScale: 0.82, x: 3, y: 2.5, category: '中間色系' },
+      dp:  { code: 'dp',  name: 'ディープ',         modifier: '濃い・深い',   sScale: 0.88, x: 3, y: 3.5, category: '暗清色系' },
+      lt:  { code: 'lt',  name: 'ライト',           modifier: '浅い',         sScale: 0.72, x: 2, y: 1.0, category: '明清色系' },
+      sf:  { code: 'sf',  name: 'ソフト',           modifier: 'やわらかい',   sScale: 0.52, x: 2, y: 2.0, category: '中間色系' },
+      d:   { code: 'd',   name: 'ダル',             modifier: 'くすんだ',     sScale: 0.50, x: 2, y: 3.0, category: '中間色系' },
+      dk:  { code: 'dk',  name: 'ダーク',           modifier: '暗い',         sScale: 0.72, x: 2, y: 4.0, category: '暗清色系' },
+      p:   { code: 'p',   name: 'ペール',           modifier: '薄い',         sScale: 0.42, x: 1, y: 0.8, category: '明清色系' },
+      ltg: { code: 'ltg', name: 'ライトグレイッシュ',modifier: '明るい灰みの', sScale: 0.25, x: 1, y: 1.9, category: '中間色系' },
+      g:   { code: 'g',   name: 'グレイッシュ',     modifier: '灰みの',       sScale: 0.24, x: 1, y: 3.1, category: '中間色系' },
+      dkg: { code: 'dkg', name: 'ダークグレイッシュ',modifier: '暗い灰みの',   sScale: 0.28, x: 1, y: 4.2, category: '暗清色系' }
+    };
+
+    const PCCS_ACHROMATIC = {
+      'W':     { code: 'W',      name: 'ホワイト',          lightnessVal: 9.5, hex: '#F7F7F7' },
+      'Gy-8.5':{ code: 'Gy-8.5', name: 'ライトグレイ(8.5)', lightnessVal: 8.5, hex: '#DCDCDC' },
+      'ltGy':  { code: 'ltGy',   name: 'ライトグレイ',      lightnessVal: 7.5, hex: '#BFBFBF' },
+      'mGy':   { code: 'mGy',    name: 'ミディアムグレイ',  lightnessVal: 5.5, hex: '#888888' },
+      'dkGy':  { code: 'dkGy',   name: 'ダークグレイ',      lightnessVal: 3.5, hex: '#525252' },
+      'Gy-2.5':{ code: 'Gy-2.5', name: 'ダークグレイ(2.5)', lightnessVal: 2.5, hex: '#3A3A3A' },
+      'Bk':    { code: 'Bk',     name: 'ブラック',          lightnessVal: 1.5, hex: '#1E1E1E' }
+    };
+
+    const V_BASE_LIGHTNESS = {
+      1: 45, 2: 47, 3: 52, 4: 56, 5: 61, 6: 67, 7: 73, 8: 79,
+      9: 74, 10: 66, 11: 57, 12: 48, 13: 45, 14: 44, 15: 43, 16: 42,
+      17: 40, 18: 37, 19: 33, 20: 29, 21: 32, 22: 35, 23: 39, 24: 42
+    };
+
+    function hslToHex(h, s, l) {
+      l = Math.max(8, Math.min(95, l)) / 100;
+      const a = (Math.max(0, Math.min(100, s)) * Math.min(l, 1 - l)) / 100;
+      const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+      };
+      return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+    }
+
+    function isHexDark(hex) {
+      const c = hex.replace('#', '');
+      if (c.length !== 6) return false;
+      const r = parseInt(c.substring(0, 2), 16);
+      const g = parseInt(c.substring(2, 4), 16);
+      const b = parseInt(c.substring(4, 6), 16);
+      return (r * 299 + g * 587 + b * 114) / 1000 < 140;
+    }
+
+    function getPCCSColor(notation) {
+      if (!notation) return { code: '', hex: '#CCCCCC', isDark: false };
+      const clean = notation.trim();
+      if (PCCS_ACHROMATIC[clean]) {
+        const ach = PCCS_ACHROMATIC[clean];
+        return { code: ach.code, name: ach.name, hex: ach.hex, isDark: ach.lightnessVal < 5.5 };
+      }
+      if (clean.startsWith('#')) {
+        const [hexPart, labelPart] = clean.split('|');
+        return { code: labelPart || hexPart, name: labelPart || hexPart, hex: hexPart, isDark: isHexDark(hexPart) };
+      }
+      const match = clean.match(/^(ltg|dkg|dp|lt|sf|dk|v|b|s|d|p|g)(\d{1,2})\+?$/);
+      if (!match) return { code: clean, name: clean, hex: '#888888', isDark: true };
+      const toneCode = match[1];
+      const hueNum = parseInt(match[2], 10);
+      const hueObj = PCCS_HUES[hueNum] || PCCS_HUES[2];
+      const toneObj = PCCS_TONES[toneCode] || PCCS_TONES.v;
+      const baseL = V_BASE_LIGHTNESS[hueNum] || 50;
+      let targetL;
+      switch (toneCode) {
+        case 'p':   targetL = 84 + (baseL - 50) * 0.16; break;
+        case 'lt':  targetL = 73 + (baseL - 50) * 0.24; break;
+        case 'b':   targetL = 61 + (baseL - 50) * 0.34; break;
+        case 'v':   targetL = baseL; break;
+        case 'dp':  targetL = 33 + (baseL - 50) * 0.22; break;
+        case 'dk':  targetL = 22 + (baseL - 50) * 0.16; break;
+        case 'ltg': targetL = 72 + (baseL - 50) * 0.14; break;
+        case 'sf':  targetL = 60 + (baseL - 50) * 0.20; break;
+        case 's':   targetL = 48 + (baseL - 50) * 0.26; break;
+        case 'd':   targetL = 45 + (baseL - 50) * 0.18; break;
+        case 'g':   targetL = 42 + (baseL - 50) * 0.14; break;
+        case 'dkg': targetL = 21 + (baseL - 50) * 0.10; break;
+        default:    targetL = baseL;
+      }
+      let targetS = 90 * toneObj.sScale;
+      if (toneCode === 'v' && (hueNum >= 6 && hueNum <= 9)) targetS = 98;
+      const hex = hslToHex(hueObj.h, targetS, targetL);
+      return {
+        code: clean,
+        name: `${toneObj.modifier}${hueObj.name} (${clean})`,
+        hueCode: hueObj.code,
+        hueNum: hueNum,
+        hex: hex,
+        isDark: targetL < 53
+      };
+    }
+
+    function renderSwatchGroupHTML(codes, opts = {}) {
+      const showCode = opts.showCode !== undefined ? opts.showCode : true;
+      const showDetail = opts.showDetail || false;
+      const sizeClass = opts.size ? `swatch-${opts.size}` : 'swatch-md';
+      const chips = codes.map(code => {
+        const info = getPCCSColor(code);
+        const textColor = info.isDark ? '#FFFFFF' : '#1E293B';
+        const subLabel = showDetail && info.hueCode ? `<span class="swatch-sub">${info.hueCode}</span>` : '';
+        return `
+          <div class="color-swatch-card ${sizeClass}" style="background-color: ${info.hex}; color: ${textColor};" title="${info.name}">
+            ${showCode ? `<span class="swatch-code">${info.code}</span>` : ''}
+            ${subLabel}
+          </div>
+        `;
+      }).join('');
+      return `<div class="swatch-strip">${chips}</div>`;
+    }
+  </script>
+  <script>
+const CATEGORIES = {
+  harmony: {
+    id: 'harmony',
+    name: '色彩調和と配色技法',
+    shortName: '配色技法・調和',
+    icon: '🎨',
+    description: 'ナチュラル・コンプレックスハーモニー、カマイユ、ビコロール、トーン配色などの実技・応用問題'
+  },
+  light: {
+    id: 'light',
+    name: '光と色・照明・表色系',
+    shortName: '照明・マンセル・混色',
+    icon: '💡',
+    description: '光源の分光分布、色温度、演色性(Ra)、マンセル表色系、並置・継時加法混色など'
+  },
+  ud: {
+    id: 'ud',
+    name: '色のユニバーサルデザイン',
+    shortName: '色のUD・安全色',
+    icon: '👁️',
+    description: '高齢者の視覚変化、P型・D型色覚の混同色、JIS安全色と対比色など'
+  },
+  perception: {
+    id: 'perception',
+    name: '色彩心理と視覚効果',
+    shortName: '視覚効果・知覚',
+    icon: '🌀',
+    description: 'リープマン効果、マッハバンド、ベンハムのコマ、プルキンエ現象、条件等色など'
+  },
+  design: {
+    id: 'design',
+    name: 'ファッション・インテリア・景観',
+    shortName: 'デザイン・インテリア・景観',
+    icon: '🏠',
+    description: '配色イメージ、ファッション用語、プロダクト(CMF)、インテリア明度配分、景観色彩など'
+  },
+  history: {
+    id: 'history',
+    name: '色彩の歴史と調和論',
+    shortName: '色彩史・調和論',
+    icon: '📜',
+    description: 'ニュートン、ゲーテ、シュヴルール、ジャッドの4原理、ムーン＆スペンサーなど'
+  }
+};
+
+const QUESTIONS_DB = [
+  {
+    id: 'q01', category: 'harmony', hasVisual: true,
+    question: '次の4つの2色配色のうち、PCCSにおける「ナチュラルハーモニー」の関係になっているものを1つ選びなさい。',
+    options: [
+      { text: 'lt8 と d10 の配色', swatches: ['lt8', 'd10'] },
+      { text: 'd8 と lt10 の配色', swatches: ['d8', 'lt10'] },
+      { text: 'dp6 と lt4 の配色', swatches: ['dp6', 'lt4'] },
+      { text: 'dk12 と p14 の配色', swatches: ['dk12', 'p14'] }
+    ],
+    answer: 0,
+    explanation: '<strong>ナチュラルハーモニー</strong>は、自然界の光の順列にならい、隣接・類似色相において「黄（8:Y）に近い色相を高明度（明るいトーン）」「青紫（20:V）に近い色相を低明度（暗いトーン）」にする配色です。<br>・8:Y（黄）と10:YG（黄緑）では、<strong>8:Yのほうが純色の明度が高い</strong>ため、8番を明るい<code>lt8</code>、10番を暗い<code>d10</code>にしたものがナチュラルハーモニーとなります。'
+  },
+  {
+    id: 'q02', category: 'harmony', hasVisual: true,
+    question: '次の4つの2色配色のうち、「コンプレックスハーモニー」の関係になっているものを1つ選びなさい。',
+    options: [
+      { text: 'b7 と dp5 の配色', swatches: ['b7', 'dp5'] },
+      { text: 'lt10 と d12 の配色', swatches: ['lt10', 'd12'] },
+      { text: 'd6 と lt4 の配色', swatches: ['d6', 'lt4'] },
+      { text: 'p9 と sf11 の配色', swatches: ['p9', 'sf11'] }
+    ],
+    answer: 2,
+    explanation: '<strong>コンプレックスハーモニー</strong>は、自然の明度順列（黄が明るく青紫が暗い）を逆転させた配色です。<br>・4:rO（赤みの橙）と6:yO（黄みの橙）を比較すると、黄（8:Y）に近いのは<strong>6:yO</strong>です。本来の明度が高い6番を低明度の<code>d6</code>にし、4番を高明度の<code>lt4</code>に逆転させているため、<code>d6 と lt4</code>がコンプレックスハーモニーとなります。'
+  },
+  {
+    id: 'q03', category: 'harmony', hasVisual: true,
+    promptSwatches: [{ label: '提示された配色', codes: ['p4', 'ltg4'] }],
+    question: '上の配色カード（p4 と ltg4）のように、同一色相または隣接色相（色相差0〜1）かつ同一・隣接トーンを用い、一見すると単色に見えるほど曖昧で穏やかな配色技法を何というか。',
+    options: [
+      { text: 'カマイユ配色' },
+      { text: 'フォカマイユ配色' },
+      { text: 'ビコロール配色' },
+      { text: 'トーンオントーン配色' }
+    ],
+    answer: 0,
+    explanation: '<strong>カマイユ（camaïeu）配色</strong>は、同一色相または隣接色相（色相差0〜1）で、トーンも同一または隣接トーン（pとltgなど）を組み合わせる技法です。一見すると1色に見えるほど差が小さい上品な配色です。'
+  },
+  {
+    id: 'q04', category: 'harmony', hasVisual: true,
+    question: '「フォカマイユ配色」の例として最も適切な配色カードを1つ選びなさい。',
+    options: [
+      { text: 'sf10 と sf12（類似色相・同一トーン）', swatches: ['sf10', 'sf12'] },
+      { text: 'v2 と v14（補色色相・同一トーン）', swatches: ['v2', 'v14'] },
+      { text: 'p16 と dk16（同一色相・明度差大）', swatches: ['p16', 'dk16'] },
+      { text: 'v8 と Bk（高彩度色＋低明度無彩色）', swatches: ['v8', 'Bk'] }
+    ],
+    answer: 0,
+    explanation: '<strong>フォカマイユ（faux camaïeu＝偽のカマイユ）配色</strong>は、カマイユよりもわずかに変化をつけた配色で、類似色相（色相差2〜3程度）や類似トーンを組み合わせます。<code>sf10</code>（10:YG）と<code>sf12</code>（12:G）は色相差2の類似色相＋同一トーンであり、フォカマイユ配色の典型例です。'
+  },
+  {
+    id: 'q05', category: 'harmony', hasVisual: true,
+    question: 'フランス語で「2色配色」を意味し、明快でコントラストの強い2色を組み合わせる「ビコロール（bicolore）」の例として最も適切なものを1つ選びなさい。',
+    options: [
+      { text: 'v2 と W（冴えた赤と白）', swatches: ['v2', 'W'] },
+      { text: 'p6 と p7（薄い橙系の近似配色）', swatches: ['p6', 'p7'] },
+      { text: 'ltg14 と g14（灰みの青緑系の同系配色）', swatches: ['ltg14', 'g14'] },
+      { text: 'd8 と sf9（中彩度・類似色相配色）', swatches: ['d8', 'sf9'] }
+    ],
+    answer: 0,
+    explanation: '<strong>ビコロール</strong>は、色相・明度・彩度のいずれかに強い対比（コントラスト）を持たせた明快な2色配色です。純色同士の補色や、純色と白（<code>v2 と W</code>）などの組み合わせが代表的です。'
+  },
+  {
+    id: 'q06', category: 'harmony', hasVisual: true,
+    promptSwatches: [{ label: 'フランスの国旗などにみられる3色配色', codes: ['v18', 'W', 'v2'] }],
+    question: '上の配色のように、コントラストの強い3色を組み合わせる配色技法を何というか。',
+    options: [
+      { text: 'トリコロール' },
+      { text: 'カマイユ' },
+      { text: 'トーナル配色' },
+      { text: 'トーンオントーン' }
+    ],
+    answer: 0,
+    explanation: '<strong>トリコロール（tricolore）</strong>は、フランス語で「3色配色」を意味し、対比の強い有彩色3色、または高彩度の有彩色2色＋無彩色（白や黒）1色を組み合わせた明快で力強い配色です。'
+  },
+  {
+    id: 'q07', category: 'harmony', hasVisual: true,
+    promptSwatches: [{ label: '基準色', codes: ['v2'] }],
+    question: '基準色を「v2（赤）」としたとき、PCCS 24色相環における「スプリットコンプリメンタリー（分裂補色配色）」となる残り2色の組み合わせを選びなさい。',
+    options: [
+      { text: 'v13 と v15', swatches: ['v2', 'v13', 'v15'] },
+      { text: 'v10 と v18', swatches: ['v2', 'v10', 'v18'] },
+      { text: 'v8 と v14 と v20', swatches: ['v2', 'v8', 'v14', 'v20'] },
+      { text: 'v12 と v16', swatches: ['v2', 'v12', 'v16'] }
+    ],
+    answer: 0,
+    explanation: '<strong>スプリットコンプリメンタリー（分裂補色配色）</strong>は、基準色の補色（色相差12）の両隣を組み合わせる3色配色です。基準色<code>2:R</code>の補色は<code>14:BG</code>（2 + 12 = 14）で、その両隣は<strong>13:bG</strong>と<strong>15:BG</strong>です。'
+  },
+  {
+    id: 'q08', category: 'harmony', hasVisual: true,
+    question: 'PCCS 24色相環において、色相環を3等分（色相差8）する「トライアド（3色配色）」の組み合わせとして正しいものを1つ選びなさい。',
+    options: [
+      { text: 'v4 ー v12 ー v20', swatches: ['v4', 'v12', 'v20'] },
+      { text: 'v2 ー v8 ー v14', swatches: ['v2', 'v8', 'v14'] },
+      { text: 'v6 ー v12 ー v18', swatches: ['v6', 'v12', 'v18'] },
+      { text: 'v1 ー v7 ー v19', swatches: ['v1', 'v7', 'v19'] }
+    ],
+    answer: 0,
+    explanation: 'PCCSは24色相環なので、<strong>トライアド（正三角形の3色配色）</strong>の色相差は 24 ÷ 3 ＝ <strong>8</strong> です。<code>4 → 12 → 20</code> が正解です。'
+  },
+  {
+    id: 'q09', category: 'harmony', hasVisual: true,
+    question: 'PCCS 24色相環を4等分（正方形・色相差6）する「テトラード（4色配色）」の組み合わせとして正しいものを1つ選びなさい。',
+    options: [
+      { text: 'v3 ー v9 ー v15 ー v21', swatches: ['v3', 'v9', 'v15', 'v21'] },
+      { text: 'v2 ー v6 ー v14 ー v18', swatches: ['v2', 'v6', 'v14', 'v18'] },
+      { text: 'v4 ー v10 ー v14 ー v20', swatches: ['v4', 'v10', 'v14', 'v20'] },
+      { text: 'v1 ー v8 ー v13 ー v20', swatches: ['v1', 'v8', 'v13', 'v20'] }
+    ],
+    answer: 0,
+    explanation: '<strong>テトラード（正方形の4色配色）</strong>の色相差は 24 ÷ 4 ＝ <strong>6</strong> です。<code>3 → 9 → 15 → 21</code> が正方形のテトラードになります。'
+  },
+  {
+    id: 'q10', category: 'harmony', hasVisual: true,
+    question: '中間色（中明度・中〜低彩度のトーン：sf, d, ltg, gなど）を中心にまとめた、穏やかで落ち着いた配色技法「トーナル（tonal）配色」として最も適切なものを選びなさい。',
+    options: [
+      { text: 'd2 ー d6 ー ltg8', swatches: ['d2', 'd6', 'ltg8'] },
+      { text: 'v2 ー v8 ー v18', swatches: ['v2', 'v8', 'v18'] },
+      { text: 'p12 ー lt12 ー dp12', swatches: ['p12', 'lt12', 'dp12'] },
+      { text: 'W ー mGy ー Bk', swatches: ['W', 'mGy', 'Bk'] }
+    ],
+    answer: 0,
+    explanation: '<strong>トーナル配色</strong>は、PCCSトーン図の中央付近に位置する中明度・中〜低彩度のトーン（<strong>sf, d, ltg, g</strong>）を使った、くすみのある穏やかで落ち着いた配色です。'
+  },
+  {
+    id: 'q11', category: 'harmony', hasVisual: true,
+    promptSwatches: [{ label: '配色例', codes: ['lt16', 'dk16'] }],
+    question: '上の配色（lt16 と dk16）のように、同一色相（または類似色相）の中で明度差を大きくとって濃淡のコントラストをつける配色技法を何というか。',
+    options: [
+      { text: 'トーンオントーン配色' },
+      { text: 'トーンイントーン配色' },
+      { text: 'カマイユ配色' },
+      { text: 'ダイアード配色' }
+    ],
+    answer: 0,
+    explanation: '<strong>トーンオントーン配色</strong>は、同一・類似色相において<strong>明度差の大きいトーン</strong>（例：<code>lt16</code>と<code>dk16</code>）を組み合わせる配色です。'
+  },
+  {
+    id: 'q12', category: 'harmony', hasVisual: true,
+    question: 'PCCSの5色配色「ペンタード」および6色配色「ヘクサード」に関する記述として、最も適切なものを1つ選びなさい。',
+    options: [
+      { text: 'ペンタードには、トライアド（3色配色）に白（W）と黒（Bk）を加えた5色配色がある。', swatches: ['v2', 'v10', 'v18', 'W', 'Bk'] },
+      { text: '24色相環は5で割り切れるため、ペンタードは色相環を正確に5等分した色相のみでつくられる。' },
+      { text: 'ヘクサードは色相差6の4色に有彩色をさらに2色ランダムに加えたものだけを指す。' },
+      { text: 'ペンタードやヘクサードでは無彩色（WやBk）を一切使用してはならない。' }
+    ],
+    answer: 0,
+    explanation: '<strong>ペンタード（5色配色）</strong>には「色相環をほぼ5等分する5色を選ぶ方法」のほか、<strong>「トライアドの3色に白（W）と黒（Bk）を加える方法」</strong>があります。'
+  },
+  {
+    id: 'q13', category: 'harmony', hasVisual: true,
+    question: '次の2色配色のうち、18:B（青）と20:V（青紫）を使った「ナチュラルハーモニー」として正しいものを選びなさい。',
+    options: [
+      { text: 'lt18 と dp20', swatches: ['lt18', 'dp20'] },
+      { text: 'dp18 と lt20', swatches: ['dp18', 'lt20'] },
+      { text: 'dk18 と p20', swatches: ['dk18', 'p20'] },
+      { text: 'dkg18 と b20', swatches: ['dkg18', 'b20'] }
+    ],
+    answer: 0,
+    explanation: '20:V（青紫）は全24色相の中で最も純色の明度が低い色相です。18:Bと20:Vでは18:Bのほうが自然の明度が高いため、18番を高明度の<code>lt18</code>、20番を低明度の<code>dp20</code>にしたものが<strong>ナチュラルハーモニー</strong>です。'
+  },
+  {
+    id: 'q14', category: 'harmony', hasVisual: true,
+    question: '純色に「白（W）」のみを混ぜてできるトーン群（p, lt, b）をPCCSでは総称して何と呼ぶか。',
+    options: [
+      { text: '明清色（ティントカラー）', swatches: ['p2', 'lt2', 'b2'] },
+      { text: '暗清色（シェードカラー）', swatches: ['dp2', 'dk2'] },
+      { text: '中間色（トーンカラー）', swatches: ['ltg2', 'sf2', 'd2', 'g2'] },
+      { text: '純色（ビビッドカラー）', swatches: ['v2'] }
+    ],
+    answer: 0,
+    explanation: '純色（vトーン）に白だけを混ぜて得られる澄んだ明るい色群（<strong>p, lt, b</strong>）を<strong>明清色（ティント）</strong>と呼びます。黒だけを混ぜた色群（dp, dk）は<strong>暗清色（シェード）</strong>、灰色を混ぜた色群は<strong>中間色</strong>です。'
+  },
+  {
+    id: 'q15', category: 'harmony', hasVisual: true,
+    promptSwatches: [{ label: '多色配色の間に挿入された白（W）', codes: ['v2', 'W', 'v12', 'W', 'v18'] }],
+    question: '上の配色のように、強すぎる対比を和らげたり、逆にぼやけた配色を引き締めたりするために色と色の間に挿入する色を何と呼ぶか。',
+    options: [
+      { text: 'セパレーションカラー' },
+      { text: 'ドミナントカラー' },
+      { text: 'アソートカラー' },
+      { text: 'グラデーションカラー' }
+    ],
+    answer: 0,
+    explanation: '<strong>セパレーション（分離）配色</strong>において挿入される色を<strong>セパレーションカラー</strong>と呼びます。'
+  },
+  {
+    id: 'q16', category: 'harmony', hasVisual: true,
+    promptSwatches: [{ label: '対象配色', codes: ['lt2', 'lt6', 'lt8', 'lt10'] }],
+    question: '配色全体の中で特定の「色相」や「トーン」を統一して支配的に用い、全体にまとまりを与える手法を何というか。',
+    options: [
+      { text: 'ドミナント配色（図の例は「トーン・ドミナント」）' },
+      { text: 'グラデーション配色（図の例は「明度グラデーション」）' },
+      { text: 'セパレーション配色' },
+      { text: 'アクセント配色' }
+    ],
+    answer: 0,
+    explanation: '全体を一つの要素で支配（統一）する配色を<strong>ドミナント配色</strong>といい、色相で統一する<strong>「カラー・ドミナント」</strong>と、トーンで統一する<strong>「トーン・ドミナント」</strong>があります。'
+  },
+  {
+    id: 'q17', category: 'light', hasVisual: false,
+    question: '光源の「色温度（単位：K ケルビン）」と光色の関係についての記述として、最も適切なものを1つ選びなさい。',
+    options: [
+      { text: '色温度が低い光源ほど赤みが強い光になり、色温度が高い光源ほど青みが強い光になる。' },
+      { text: '色温度が高い光源ほど赤みが強い暖色系の光になり、白熱電球は約6500Kである。' },
+      { text: '色温度は光源の演色性を0〜100の数値で表したものであり、単位Kはカンデラを意味する。' },
+      { text: '昼光色蛍光ランプの色温度は約2800Kであり、夕日の色温度よりも低い。' }
+    ],
+    answer: 0,
+    explanation: '<strong>色温度（単位：K ケルビン）</strong>は、低い（約2000〜3000K）ほど赤みが強い暖かな光（白熱電球・夕日）、高い（約6000K以上）ほど青みが強い涼しげな光（昼光色・晴天の空光）になります。'
+  },
+  {
+    id: 'q18', category: 'light', hasVisual: false,
+    question: '照明光が物体の色の見え方に及ぼす性質を「演色性」という。基準光と同じ見え方をする理想的な状態を100として表す指標を何というか。',
+    options: [
+      { text: '平均演色評価数（Ra）' },
+      { text: '分光反射率（ρ）' },
+      { text: '比視感度（V(λ)）' },
+      { text: '色温度（K）' }
+    ],
+    answer: 0,
+    explanation: '演色性を評価する代表的な数値は<strong>平均演色評価数（Ra）</strong>です。番号1〜8の8種類の試験色を基準光の下と比較し、色差がない場合を<strong>Ra = 100</strong>として評価します。'
+  },
+  {
+    id: 'q19', category: 'light', hasVisual: false,
+    question: '演色評価数において、平均演色評価数（Ra）の算出に使われる8色とは別に、高彩度の赤・黄・緑・青や「日本人の肌色」「木の葉の色」を加えた番号9〜15の7つの試験色による評価数を何というか。',
+    options: [
+      { text: '特殊演色評価数（Ri：R9〜R15）' },
+      { text: '標準演色評価数（Rs）' },
+      { text: '絶対演色指数（Rc）' },
+      { text: '明所視演色評価数（Rp）' }
+    ],
+    answer: 0,
+    explanation: 'No.9（赤）〜No.15（日本人の肌色）の7色を個別に評価したものを<strong>特殊演色評価数（Ri：R9〜R15）</strong>と呼びます。'
+  },
+  {
+    id: 'q20', category: 'light', hasVisual: true,
+    promptSwatches: [{ label: 'マンセル基本5色相（R, Y, G, B, P）', codes: ['v2', 'v8', 'v12', 'v17', 'v22'] }],
+    question: 'マンセル表色系（Munsell Color System）に関する記述として、誤っているものを1つ選びなさい。',
+    options: [
+      { text: '彩度（Chroma）の最高値はすべての色相で一律に「14」と定められている。' },
+      { text: '色相環は基本5色相（R, Y, G, B, P）に中間5色相（YR, GY, BG, PB, RP）を加えた10色相を基本とする。' },
+      { text: '有彩色の表記は「色相 明度/彩度（H V/C）」の順で、例えば「5R 4/14」のように記す。' },
+      { text: '無彩色は彩度を持たないため、Neutralの頭文字をとって「N8」のように表記する。' }
+    ],
+    answer: 0,
+    explanation: 'マンセル表色系では、色相や明度によって到達できる最高彩度が異なります（5Rは14程度、5BGは8〜10程度）。そのためマンセル色立体は<strong>非対称の歪んだ形状</strong>をしています。'
+  },
+  {
+    id: 'q21', category: 'light', hasVisual: false,
+    question: 'マンセル色相環において、「5YR（橙）」の補色（向かい合う位置にある色相）はどれか。',
+    options: [
+      { text: '5B（青）' },
+      { text: '5PB（青紫）' },
+      { text: '5BG（青緑）' },
+      { text: '5G（緑）' }
+    ],
+    answer: 0,
+    explanation: 'マンセルの10色相環は <strong>R → YR → Y → GY → G → BG → B → PB → P → RP</strong> です。向かい側の補色は R⇔BG、<strong>YR⇔B</strong>、Y⇔PB、GY⇔P、G⇔RP となります。'
+  },
+  {
+    id: 'q22', category: 'light', hasVisual: false,
+    question: '新印象派の画家スーラらの「点描画」や、液晶ディスプレイの画素（RGB）のように、微細な色点を並べることで網膜上で混色されて見える現象を何というか。',
+    options: [
+      { text: '並置加法混色（中間混色）' },
+      { text: '継時加法混色（回転混色）' },
+      { text: '減法混色' },
+      { text: '同時対比混色' }
+    ],
+    answer: 0,
+    explanation: '細かな色の点や線を密接して並べ、離れた位置から見ることで網膜上で混ざり合って見える現象を<strong>並置加法混色</strong>と呼びます。明るさは平均になるため<strong>中間混色</strong>とも呼ばれます。'
+  },
+  {
+    id: 'q23', category: 'light', hasVisual: false,
+    question: 'マックスウェルのコマのように、複数の色を塗り分けた円盤を高速回転させたときに生じる混色を何というか。また、そのときの明るさはどうなるか。',
+    options: [
+      { text: '継時加法混色（回転混色）といい、混ぜた各色の面積比に応じた「平均の明るさ」になる。' },
+      { text: '継時加法混色といい、光を直接重ねたときと同じく「元のどの色よりも明るく」なる。' },
+      { text: '減法混色といい、回転速度が速いほど黒に近づいて暗くなる。' },
+      { text: '並置加法混色といい、常に補色残像が見える。' }
+    ],
+    answer: 0,
+    explanation: '円盤の高速回転による混色は<strong>継時加法混色（回転混色）</strong>といい、明るさは<strong>各色の面積比に応じた平均の明るさ（中間混色）</strong>になります。'
+  },
+  {
+    id: 'q24', category: 'light', hasVisual: false,
+    question: '各種光源の「分光分布」の特徴に関する記述として、最も適切なものを1つ選びなさい。',
+    options: [
+      { text: '白熱電球は、短波長（青）から長波長（赤）へ向かってなだらかに右肩上がりにエネルギーが増える連続スペクトルを持つ。' },
+      { text: '自然昼光は特定の波長だけに鋭い輝線スペクトルを持ち、連続スペクトルを持たない。' },
+      { text: '一般的な白色LEDは、赤色（700nm付近）のエネルギーが最も強い。' },
+      { text: '低圧ナトリウムランプは全波長にわたって均一なエネルギーを持ち、演色性が極めて高い。' }
+    ],
+    answer: 0,
+    explanation: '<strong>白熱電球</strong>は短波長から長波長（赤色側）へなだらかに上昇する<strong>右肩上がりの連続スペクトル</strong>を持ち、赤みが強く演色性（Ra≒100）が非常に高いのが特徴です。'
+  },
+  {
+    id: 'q25', category: 'light', hasVisual: false,
+    question: '照明器具からあらゆる方向に出る光の総量を表す「光束（lm）」に対し、照明された「面」が受ける光の量（単位面積あたりの光束）を何というか。',
+    options: [
+      { text: '照度（単位：ルクス lx）' },
+      { text: '光度（単位：カンデラ cd）' },
+      { text: '輝度（単位：cd/m²）' },
+      { text: '色温度（単位：ケルビン K）' }
+    ],
+    answer: 0,
+    explanation: '照らされる<strong>面</strong>に入射する単位面積あたりの光束は<strong>照度（単位：lx ルクス）</strong>です。'
+  },
+  {
+    id: 'q26', category: 'light', hasVisual: true,
+    question: 'PCCSのトーン記号と、マンセル表色系における「明度（V）」「彩度（C）」の関係について正しい記述を選びなさい。',
+    options: [
+      { text: 'PCCSのトーンは、色相ごとに異なる純色の明度傾斜を含んだまま「同じ明度感・彩度感（イメージ）」のグループとしてまとめられている。' },
+      { text: 'PCCSの「vトーン」に属する24色は、マンセル明度（V）がすべて同じ5.0に統一されている。' },
+      { text: 'PCCSの無彩色「W」はマンセル明度10、「Bk」はマンセル明度0と完全に一致する。' },
+      { text: 'PCCSの色相番号は1から10までの10色相で構成されている。' }
+    ],
+    answer: 0,
+    explanation: 'PCCSのトーンは、色相によって純色の明度が異なる（<code>v8</code>は高明度、<code>v20</code>は低明度）まま、共通のカラーイメージを持つグループとしてまとめられています。'
+  },
+  {
+    id: 'q27', category: 'light', hasVisual: false,
+    question: '蛍光ランプの種類において、赤（R）・緑（G）・青（B）の3つの狭い波長域に強い発光ピークを持たせることで、明るさと高い演色性（Ra80以上）を両立させた蛍光ランプを何というか。',
+    options: [
+      { text: '3波長域発光形蛍光ランプ' },
+      { text: 'ハロゲン蛍光ランプ' },
+      { text: '高圧ナトリウムランプ' },
+      { text: 'キセノンランプ' }
+    ],
+    answer: 0,
+    explanation: '青・緑・赤の3つの波長域に発光ピークを集中させたものを<strong>3波長域発光形蛍光ランプ</strong>と呼びます。'
+  },
+  {
+    id: 'q28', category: 'ud', hasVisual: true,
+    promptSwatches: [{ label: '高齢者が混同しやすい組み合わせ例', codes: ['W', 'p8', 'dk18', 'Bk'] }],
+    question: '加齢に伴う「高齢者の視覚特性」に関する記述として、最も適切なものを1つ選びなさい。',
+    options: [
+      { text: '水晶体が黄変するため、短波長（青〜青紫）の光が吸収され、白と淡い黄色や、紺色と黒の見分けがつきにくくなる。' },
+      { text: '水晶体が青変するため、長波長（赤〜橙）の光がまったく届かなくなり、赤色がすべて白く見える。' },
+      { text: '瞳孔径が若年者よりも大きくなるため、暗い場所での視力が若年者より向上する。' },
+      { text: '彩度が高い鮮やかな色同士の識別だけが低下し、低彩度・低明度の色同士の識別は向上する。' }
+    ],
+    answer: 0,
+    explanation: '加齢により水晶体が<strong>黄変</strong>し、<strong>短波長光（青・紫）の透過率が低下</strong>するため、<strong>「白と淡い黄色（Wとp8）」</strong>や<strong>「暗い青（紺）と黒（dk18とBk）」</strong>の識別が特に困難になります。'
+  },
+  {
+    id: 'q29', category: 'ud', hasVisual: true,
+    promptSwatches: [{ label: '1型・2型色覚で混同しやすい代表例', codes: ['v2', 'd12', 'v4', 's10'] }],
+    question: '先天赤緑色覚（1型色覚＝P型、2型色覚＝D型）の特徴と配慮に関する記述として、最も適切なものを1つ選びなさい。',
+    options: [
+      { text: '1型（P型）色覚では長波長（赤）の感度が低いため、鮮やかな赤が暗く沈んで見え、黒や濃い茶色と混同しやすい。' },
+      { text: '2型（D型）色覚は短波長（S錐体）の機能がない色覚であり、青と黄色のみを混同する。' },
+      { text: '赤と緑の区別がつきにくいため、色相は変えずに「同じ明度の赤と緑」を使えば識別しやすくなる。' },
+      { text: '日本人男性の約50%が1型または2型色覚を持っている。' }
+    ],
+    answer: 0,
+    explanation: '<strong>1型色覚（P型）</strong>ではL錐体（赤錐体）の異常により、赤〜緑の混同に加え、<strong>長波長の赤が暗く見える</strong>ため「赤と黒」「赤と焦げ茶」も混同しやすい特徴があります。'
+  },
+  {
+    id: 'q30', category: 'ud', hasVisual: true,
+    question: 'JIS安全色（JIS Z 9101）における「安全色」と、それが意味する情報の組み合わせとして正しいものを1つ選びなさい。',
+    options: [
+      { text: '緑 ── 安全状態・進行・非常口・救護所', swatches: ['#008E5B|JIS安全色:緑', 'W'] },
+      { text: '黄 ── 禁止・停止・防火・危険', swatches: ['#F5B100|JIS安全色:黄', 'Bk'] },
+      { text: '青 ── 注意・警告（つまずき・落下注意など）', swatches: ['#0068B7|JIS安全色:青', 'W'] },
+      { text: '赤紫 ── 指示・誘導（着用義務など）', swatches: ['#A61E69|JIS安全色:赤紫', 'W'] }
+    ],
+    answer: 0,
+    explanation: 'JIS安全色は、<strong>赤</strong>（防火・禁止・停止）、<strong>黄赤</strong>（危険）、<strong>黄</strong>（注意・警告）、<strong>緑</strong>（安全・進行・非常口・救護）、<strong>青</strong>（指示・着用義務）、<strong>赤紫</strong>（放射能）です。'
+  },
+  {
+    id: 'q31', category: 'ud', hasVisual: true,
+    question: 'JIS安全色（JIS Z 9101）において、安全色を見やすくするために組み合わせる「対比色」が「黒（N1.5以下）」と定められている安全色はどれか。',
+    options: [
+      { text: '黄（2.5Y 8/13.5）と 黄赤（2.5YR 6/14）', swatches: ['#F5B100|黄', '#EC5C13|黄赤', 'Bk'] },
+      { text: '赤（7.5R 4/15）と 青（2.5PB 3.5/10）', swatches: ['#D91E2A|赤', '#0068B7|青', 'Bk'] },
+      { text: '緑（10G 4/10）と 青（2.5PB 3.5/10）', swatches: ['#008E5B|緑', '#0068B7|青', 'Bk'] },
+      { text: '赤（7.5R 4/15）と 緑（10G 4/10）', swatches: ['#D91E2A|赤', '#008E5B|緑', 'Bk'] }
+    ],
+    answer: 0,
+    explanation: '明度が高い<strong>「黄（V=8）」</strong>と<strong>「黄赤（V=6）」</strong>の対比色は<strong>黒（Bk）</strong>、明度が低い「赤・緑・青」の対比色は<strong>白（W）</strong>です。'
+  },
+  {
+    id: 'q32', category: 'ud', hasVisual: true,
+    promptSwatches: [
+      { label: '改善前（赤と緑・同明度）', codes: ['v2', 'v12'] },
+      { label: '改善後（朱色と青緑＋明度差）', codes: ['v3', 'dp14'] }
+    ],
+    question: '色覚多様性（P型・D型色覚）に配慮して「赤と緑」の識別性を高めるための色選びの工夫として、最も適切なものはどれか。',
+    options: [
+      { text: '赤は「黄みの赤（朱色〜橙寄り）」にし、緑は「青みの緑（青緑寄り）」にしたうえで、2色の間に明度差をつける。' },
+      { text: '赤を「紫みの赤（1:pR）」にし、緑を「黄緑（10:YG）」にして、明度を完全に一致させる。' },
+      { text: 'どちらの色も彩度を下げてグレイッシュトーン（g2とg12）に統一する。' },
+      { text: '境界線のセパレーションをなくし、文字情報をすべて省いて色だけで伝える。' }
+    ],
+    answer: 0,
+    explanation: '赤を<strong>黄みの赤（朱色〜オレンジ）</strong>に、緑を<strong>青みの緑（青緑）</strong>にシフトし、さらに<strong>明度差を大きくとる</strong>ことで識別性が大幅に向上します。'
+  },
+  {
+    id: 'q33', category: 'ud', hasVisual: false,
+    question: '高齢者の視覚変化として、水晶体が濁ることで光が目の中で散乱し、強い照明や西日に対して強いまぶしさを感じたりする現象を何というか。',
+    options: [
+      { text: 'グレア（まぶしさ）の増大・白内障による光散乱' },
+      { text: 'プルキンエ現象' },
+      { text: 'マッハバンド現象' },
+      { text: 'リープマン効果' }
+    ],
+    answer: 0,
+    explanation: '水晶体の混濁により眼球内で光が散乱し、視認性を低下させるまぶしさである<strong>グレア（glare）</strong>を強く感じます。'
+  },
+  {
+    id: 'q34', category: 'ud', hasVisual: false,
+    question: '案内用図記号（ピクトグラム）や誘導サインの色彩計画に関する記述として、最も適切なものを1つ選びなさい。',
+    options: [
+      { text: '非常口誘導灯の緑（安全色）と白（対比色）は、煙の中でも比較的視認しやすく、明度差が確保されている。' },
+      { text: 'サインの文字色と背景色は、色相差さえ大きければ明度差がゼロでも遠くから最も読みやすくなる。' },
+      { text: '高齢者の施設では、パステル調の淡い色同士（pトーンとWなど）で文字と背景を構成するのが最も視認性が高い。' },
+      { text: 'JIS規格の案内用図記号は、施設ごとに自由な色相へ変更することが義務付けられている。' }
+    ],
+    answer: 0,
+    explanation: 'サイン計画で最も重要なのは<strong>「図と地の明度差」</strong>です。非常口の緑と白の組み合わせは明度差が大きく視認性に優れています。'
+  },
+  {
+    id: 'q35', category: 'ud', hasVisual: true,
+    question: '3型色覚（T型：青黄色覚異常）や高齢者の視覚において、特に混同しやすい色の組み合わせはどれか。',
+    options: [
+      { text: '青と緑、または黄色と白（淡い紫）', swatches: ['v18', 'v12', 'lt8', 'W'] },
+      { text: '鮮やかな赤と白', swatches: ['v2', 'W'] },
+      { text: '黒と白', swatches: ['Bk', 'W'] },
+      { text: '濃い赤と淡い水色', swatches: ['dp2', 'p16'] }
+    ],
+    answer: 0,
+    explanation: '<strong>3型色覚（T型）</strong>や高齢者の水晶体黄変では、青と緑、黄色と白などの識別が難しくなります。'
+  },
+  {
+    id: 'q36', category: 'ud', hasVisual: false,
+    question: 'ロービジョン（弱視）の方や高齢者に向けて、印刷物やWeb画面の可読性を高めるための配慮として適切なものはどれか。',
+    options: [
+      { text: '背景の輝度を抑えた「黒地に白文字（または黄文字）」の反転表示を選べるようにすると、光散乱（まぶしさ）に悩む人に有効である。' },
+      { text: '光沢の強いコート紙を使用し、照明が強く鏡面反射するようにする。' },
+      { text: '文字の線を極細の明朝体にし、背景には高彩度の模様を敷き詰める。' },
+      { text: '黄色の背景に白抜き文字を配置すると最も明度差が大きくなり読みやすくなる。' }
+    ],
+    answer: 0,
+    explanation: '眼球内の光散乱が強い方には、<strong>黒地に白文字や黄文字</strong>といった反転表示がまぶしさを抑え非常に有効です。'
+  },
+  {
+    id: 'q37', category: 'perception', hasVisual: true,
+    promptSwatches: [{ label: '明度差がなく色相差のみの図と地', codes: ['v2', 'v12'] }],
+    question: '赤と緑のように色相差は大きくても、図と地の「明度差がほとんどない（等明度）」場合、境界線がぼやけて形が認識しにくくなる現象を何というか。',
+    options: [
+      { text: 'リープマン効果' },
+      { text: 'プルキンエ現象' },
+      { text: '面積効果' },
+      { text: 'ベゾルト効果' }
+    ],
+    answer: 0,
+    explanation: '<strong>リープマン効果</strong>とは、色相差が大きくても<strong>明度差が小さいと形の輪郭が曖昧になり、図として認識しにくくなる現象</strong>です。'
+  },
+  {
+    id: 'q38', category: 'perception', hasVisual: true,
+    promptSwatches: [{ label: '明度の段階的なグラデーション帯', codes: ['Gy-8.5', 'ltGy', 'mGy', 'dkGy', 'Gy-2.5'] }],
+    question: '上の図のように、明度が段階的に変化する灰色の帯を並べたとき、各帯の境界付近で、明るい側はより明るく、暗い側はより暗く強調されて見える現象を何というか。',
+    options: [
+      { text: 'マッハバンド（マッハの帯）' },
+      { text: 'ハーマングリッド（ヘルマン格子）' },
+      { text: 'ベンハムのコマ' },
+      { text: 'アブニー効果' }
+    ],
+    answer: 0,
+    explanation: '隣接する帯との境界部分で明暗の同時対比が強く働き、境界が強調されて見える現象を<strong>マッハバンド（マッハの帯）</strong>と呼びます。'
+  },
+  {
+    id: 'q39', category: 'perception', hasVisual: false,
+    question: '黒地に白い格子縞を描いた図を見たとき、白線の交差点にぼんやりと灰色の影が見える錯視現象を何というか。',
+    options: [
+      { text: 'ハーマングリッド（ヘルマン格子）現象' },
+      { text: 'ネオンカラー現象' },
+      { text: 'マッカロー効果' },
+      { text: 'ベゾルト・ブリュッケ現象' }
+    ],
+    answer: 0,
+    explanation: '<strong>ハーマングリッド（ヘルマン格子）現象</strong>は、明暗対比によって格子の交差点部分に灰色の斑点が浮かび上がって見える現象です。'
+  },
+  {
+    id: 'q40', category: 'perception', hasVisual: false,
+    question: '白と黒の円弧模様だけが描かれた円盤を回転させると、淡い赤や緑・青などの有彩色（主観色）が知覚される器具を何というか。',
+    options: [
+      { text: 'ベンハムのコマ' },
+      { text: 'マックスウェルのコマ' },
+      { text: 'ニュートンの色円盤' },
+      { text: 'オストワルトの色立体' }
+    ],
+    answer: 0,
+    explanation: '白と黒の模様だけで回転時に有彩色（主観色）が見える円盤を<strong>ベンハムのコマ</strong>と呼びます。R・G・B錐体の反応速度の違いによって生じます。'
+  },
+  {
+    id: 'q41', category: 'perception', hasVisual: true,
+    promptSwatches: [
+      { label: '昼間（明所視）で明るく鮮やかに見える赤', codes: ['v2'] },
+      { label: '薄暮（薄明視）で最後まで明るく見える青', codes: ['v18'] }
+    ],
+    question: '明るい場所（明所視）から薄暮（薄明視〜暗所視）に移行するとき、赤色が早く暗く沈んで見え、青色の方が相対的に明るく見えるようになる現象を何というか。',
+    options: [
+      { text: 'プルキンエ現象' },
+      { text: 'メタメリズム（条件等色）' },
+      { text: 'クライル効果' },
+      { text: '面積効果' }
+    ],
+    answer: 0,
+    explanation: '暗くなると錐体から桿体へ働きが移り、感度ピークが555nm（黄緑）から507nm（青緑）へシフトするため、暗い場所では赤が暗く青が明るく見える<strong>プルキンエ現象</strong>が起こります。'
+  },
+  {
+    id: 'q42', category: 'perception', hasVisual: false,
+    question: '2つの物体の「分光反射率」は異なっているにもかかわらず、ある特定の光源の下ではまったく同じ色に見え、別の光源の下では違う色に見える現象を何というか。',
+    options: [
+      { text: '条件等色（メタメリズム）' },
+      { text: '恒常性（色恒常）' },
+      { text: '色順応' },
+      { text: '演色評価' }
+    ],
+    answer: 0,
+    explanation: '分光反射率が異なる2つの色が、特定の照明条件の下でのみ同じ色に見える現象を<strong>条件等色（メタメリズム）</strong>といいます。'
+  },
+  {
+    id: 'q43', category: 'perception', hasVisual: false,
+    question: '小さな色見本帳で選んだ色を大面積の壁に塗ると、見本よりも「明るい色はより明るく・鮮やかに」見えてしまう視覚効果を何というか。',
+    options: [
+      { text: '面積効果' },
+      { text: '距離効果' },
+      { text: '同化現象（フォン・ベゾルト効果）' },
+      { text: '縁辺対比' }
+    ],
+    answer: 0,
+    explanation: '面積が大きくなるほど明るい色はより高明度・高彩度に見え、暗い色はより低明度に見える現象を<strong>面積効果</strong>といいます。'
+  },
+  {
+    id: 'q44', category: 'perception', hasVisual: false,
+    question: '明るい屋外から暗い映画館に入ったときの「暗順応」と、その逆の「明順応」に関する記述として正しいものはどれか。',
+    options: [
+      { text: '明順応は数十秒〜1分程度で完了するが、暗順応が完了するまでには約30分〜40分程度の時間がかかる。' },
+      { text: '暗順応は1秒以内に完了するが、明順応には1時間以上かかる。' },
+      { text: '暗順応では網膜の錐体のみが働き、桿体は活動を停止する。' },
+      { text: '赤い光は桿体を最も強く刺激するため、暗順応を最も妨げる光である。' }
+    ],
+    answer: 0,
+    explanation: '<strong>明順応</strong>は1分程度で完了しますが、<strong>暗順応</strong>は桿体の感度が最大になるまでに約30分以上かかります。'
+  },
+  {
+    id: 'q45', category: 'perception', hasVisual: false,
+    question: '白熱電球の赤い光の下で白い紙を見ても、しばらくその部屋にいると視覚系が順応し、紙が本来の「白」に見える働きを何というか。',
+    options: [
+      { text: '色順応 および 色の恒常性' },
+      { text: '条件等色（メタメリズム）' },
+      { text: '継時対比（負の残像）' },
+      { text: 'ベンハム効果' }
+    ],
+    answer: 0,
+    explanation: '照明光の色に網膜の感度が調整される<strong>色順応</strong>と、物体本来の色が変わらず知覚される<strong>色の恒常性</strong>によるものです。'
+  },
+  {
+    id: 'q46', category: 'perception', hasVisual: true,
+    promptSwatches: [
+      { label: '進出色・膨張色の例（暖色・高明度）', codes: ['v3', 'lt6'] },
+      { label: '後退色・収縮色の例（寒色・低明度）', codes: ['dp18', 'dk19'] }
+    ],
+    question: '色の進出・後退、および膨張・収縮の心理効果に関する記述として、最も適切なものを1つ選びなさい。',
+    options: [
+      { text: '進出色・後退色には「色相（暖色が飛び出し寒色が退く）」の影響が強く、膨張色・収縮色には「明度（高明度が膨張し低明度が収縮する）」の影響が最も強い。' },
+      { text: '寒色系・低彩度・低明度の色は、暖色系・高彩度・高明度の色よりも手前に飛び出して見える進出色である。' },
+      { text: '囲碁の黒石と白石はまったく同じ直径で作られており、膨張効果を考慮したサイズ差はつけられていない。' },
+      { text: '後退色である暗い青や黒の車は、実際の距離よりも近くにあるように見えるため追突されにくい。' }
+    ],
+    answer: 0,
+    explanation: '進出色・後退色には色相の影響が大きく、膨張色・収縮色には明度の影響が最も大きく働きます。'
+  },
+  {
+    id: 'q47', category: 'design', hasVisual: true,
+    promptSwatches: [{ label: 'エレガント（優雅・女性的）な配色イメージ', codes: ['ltg22', 'sf24', 'p2'] }],
+    question: '上の配色のように、赤紫〜紫系の色相を中心に、p・ltg・sfトーンなどのやや高明度〜中明度・低〜中彩度のトーンでまとめた配色イメージを表す言葉はどれか。',
+    options: [
+      { text: 'エレガント（優雅な・気品のある）' },
+      { text: 'スポーティ（快活な・活動的な）' },
+      { text: 'ワイルド（野性的な・力強い）' },
+      { text: 'マニッシュ（男性的な・ダンディな）' }
+    ],
+    answer: 0,
+    explanation: '紫〜赤紫系を中心に<code>ltg, sf, p</code>トーンで明度差・色相差を小さくまとめた配色は<strong>エレガント</strong>の代表例です。'
+  },
+  {
+    id: 'q48', category: 'design', hasVisual: false,
+    question: '実シーズンの約2年前に世界各国の代表が集まり、国際的な流行色を選定する機関を何というか。また、その日本代表加盟団体はどこか。',
+    options: [
+      { text: 'インターカラー（国際流行色委員会） ── JAFCA（日本流行色協会）' },
+      { text: 'CIE（国際照明委員会） ── JIS（日本産業標準調査会）' },
+      { text: 'PANTONE ── DIC' },
+      { text: 'AFT ── JCRI' }
+    ],
+    answer: 0,
+    explanation: '流行色は実シーズンの約2年前に<strong>インターカラー（国際流行色委員会）</strong>で選定され、日本の代表団体は<strong>JAFCA（日本流行色協会）</strong>です。'
+  },
+  {
+    id: 'q49', category: 'design', hasVisual: false,
+    question: 'プロダクトデザインにおいて、製品の価値や魅力を決定づける重要な3要素を表す略語「CMF」とは何の頭文字か。',
+    options: [
+      { text: 'Color（色）・Material（素材）・Finish（仕上げ）' },
+      { text: 'Contrast（対比）・Mood（雰囲気）・Form（形態）' },
+      { text: 'Chroma（彩度）・Munsell（マンセル）・Fashion（流行）' },
+      { text: 'Coordinate（配色）・Marketing（市場）・Function（機能）' }
+    ],
+    answer: 0,
+    explanation: '<strong>CMF</strong>とは、<strong>Color（色）・Material（素材）・Finish（表面仕上げ）</strong>の3要素です。'
+  },
+  {
+    id: 'q50', category: 'design', hasVisual: true,
+    promptSwatches: [
+      { label: '天井（高明度）', codes: ['W'] },
+      { label: '壁（中高明度）', codes: ['ltg6'] },
+      { label: '床（中低明度）', codes: ['dk6'] }
+    ],
+    question: '住宅インテリアの色彩計画において、空間に安定感と開放感を与える「床・壁・天井」の明度配分として最も適切なものはどれか。',
+    options: [
+      { text: '床を最も低明度（暗く）にし、壁を中〜高明度、天井を最も高明度（明るく）にする。' },
+      { text: '天井を最も低明度にし、床を最も高明度にする。' },
+      { text: '床・壁・天井すべてを高彩度のビビッドトーンで統一する。' },
+      { text: '壁を最も低明度にし、床と天井を同じ高彩度色にする。' }
+    ],
+    answer: 0,
+    explanation: 'インテリアの基本明度配分は<strong>「床（低〜中明度）＜ 壁（中〜高明度）＜ 天井（高明度）」</strong>です。'
+  },
+  {
+    id: 'q51', category: 'design', hasVisual: true,
+    promptSwatches: [
+      { label: 'ベースカラー (70%)', codes: ['ltg6'] },
+      { label: 'アソートカラー (25%)', codes: ['d6'] },
+      { label: 'アクセントカラー (5%)', codes: ['v16'] }
+    ],
+    question: 'インテリアやファッションにおける「ベースカラー」「アソートカラー」「アクセントカラー」の面積比の目安として、最も一般的なものはどれか。',
+    options: [
+      { text: 'ベースカラー 70% ： アソートカラー 25% ： アクセントカラー 5%' },
+      { text: 'ベースカラー 33% ： アソートカラー 33% ： アクセントカラー 34%' },
+      { text: 'ベースカラー 10% ： アソートカラー 20% ： アクセントカラー 70%' },
+      { text: 'ベースカラー 50% ： アソートカラー 0% ： アクセントカラー 50%' }
+    ],
+    answer: 0,
+    explanation: '黄金比率は<strong>ベースカラー 70% ： アソートカラー 25% ： アクセントカラー 5%</strong>です。'
+  },
+  {
+    id: 'q52', category: 'design', hasVisual: false,
+    question: '景観法に基づく自治体の「景観計画」において、建築物の外壁などの色彩基準を数値で定める際に最も広く採用されている表色系はどれか。',
+    options: [
+      { text: 'マンセル表色系（JIS Z 8721：色相・明度・彩度による制限）' },
+      { text: 'オストワルト表色系' },
+      { text: 'RGB表色系' },
+      { text: 'CMYK表色系' }
+    ],
+    answer: 0,
+    explanation: '日本の景観計画では、JIS規格に採用されている<strong>マンセル表色系</strong>を用いて外壁の明度・彩度基準を規定しています。'
+  },
+  {
+    id: 'q53', category: 'design', hasVisual: false,
+    question: '景観色彩において、建築物の外壁に推奨される色相・明度・彩度の一般的な傾向として、最も適切なものを1つ選びなさい。',
+    options: [
+      { text: '自然の土壌や木材になじみやすい「Y〜YR（黄〜黄赤）系」の「中〜高明度・低彩度」の色が基調色として推奨されやすい。' },
+      { text: '周囲の緑と補色対比をなす「高彩度の赤紫」を大面積に塗ることが推奨されている。' },
+      { text: '面積効果を考慮して、色見本ではなるべく彩度10以上の高彩度色を選ぶ。' },
+      { text: 'すべての建物をマンセルN9.5（純白）に統一することが法律で定められている。' }
+    ],
+    answer: 0,
+    explanation: '外壁の基調色には<strong>YR〜Y系の低彩度色（ベージュ・アイボリー・ブラウン系）</strong>が最も周囲の自然や街並みになじみやすく推奨されます。'
+  },
+  {
+    id: 'q54', category: 'design', hasVisual: true,
+    promptSwatches: [
+      { label: 'ウォーム × ソフト', codes: ['p4', 'lt6', 'sf8'] },
+      { label: 'クール × ハード', codes: ['dk18', 'dkg16', 'Bk'] }
+    ],
+    question: '色彩の感情効果（心理イメージ）を測る2大基本軸として、一般的に用いられる対極イメージ軸の組み合わせはどれか。',
+    options: [
+      { text: '「ウォーム（暖かい）⇔ クール（冷たい）」軸 と 「ソフト（柔らかい）⇔ ハード（硬い）」軸' },
+      { text: '「高価 ⇔ 安価」軸 と 「新しい ⇔ 古い」軸' },
+      { text: '「面積大 ⇔ 面積小」軸 と 「進出色 ⇔ 後退色」軸' },
+      { text: '「加法混色 ⇔ 減法混色」軸 と 「明所視 ⇔ 暗所視」軸' }
+    ],
+    answer: 0,
+    explanation: 'カラーイメージスケールの基本2軸は<strong>「ウォーム ⇔ クール」軸</strong>と<strong>「ソフト ⇔ ハード」軸</strong>です。'
+  },
+  {
+    id: 'q55', category: 'history', hasVisual: false,
+    question: 'アメリカの色彩学者ジャッド（D.B. Judd）が提唱した「色彩調和の4つの原理」に含まれないものはどれか。',
+    options: [
+      { text: '希少性の原理（Principle of Rarity）' },
+      { text: '秩序の原理（Principle of Order）' },
+      { text: 'なじみ（親近性）の原理（Principle of Familiarity）' },
+      { text: '類似性（共通性）の原理 および 明瞭性（曖昧さの否定）の原理' }
+    ],
+    answer: 0,
+    explanation: 'ジャッドの色彩調和の4原理は、<strong>①秩序の原理、②なじみの原理、③類似性の原理、④明瞭性（曖昧さの否定）の原理</strong>です。'
+  },
+  {
+    id: 'q56', category: 'history', hasVisual: false,
+    question: 'ゴブラン織の染色研究所長を務めながら『色彩の同時対比の法則』を著し、新印象派の画家たちにも多大な影響を与えた人物は誰か。',
+    options: [
+      { text: 'シュヴルール（M.E. Chevreul）' },
+      { text: 'ニュートン（I. Newton）' },
+      { text: 'ゲーテ（J.W. von Goethe）' },
+      { text: 'オストワルト（W. Ostwald）' }
+    ],
+    answer: 0,
+    explanation: '<strong>シュヴルール</strong>は1839年に『色彩の同時対比の法則』を発表しました。'
+  },
+  {
+    id: 'q57', category: 'history', hasVisual: false,
+    question: 'ニュートンの光学を批判して人間の視覚体験・心理的効果・明暗の境界から生じる色を重視した著書『色彩論』を1810年に著した人物は誰か。',
+    options: [
+      { text: 'ゲーテ（J.W. von Goethe）' },
+      { text: 'マンセル（A.H. Munsell）' },
+      { text: 'ヘルムホルツ（H. von Helmholtz）' },
+      { text: 'ヤング（T. Young）' }
+    ],
+    answer: 0,
+    explanation: '<strong>ゲーテ</strong>は1810年に『色彩論』を著し、生理的色彩や色の感情効果、6色相環などを体系化しました。'
+  },
+  {
+    id: 'q58', category: 'history', hasVisual: false,
+    question: 'プリズムを用いて太陽の白色光を7色のスペクトルに分光する実験を行い、1704年に著書『光学（Opticks）』を発表した物理学者は誰か。',
+    options: [
+      { text: 'ニュートン（I. Newton）' },
+      { text: 'マックスウェル（J.C. Maxwell）' },
+      { text: 'ルード（O.N. Rood）' },
+      { text: 'イッテン（J. Itten）' }
+    ],
+    answer: 0,
+    explanation: '<strong>ニュートン</strong>は太陽光をプリズムで分光し、著書『光学（Opticks）』で7色の色相環を示しました。'
+  },
+  {
+    id: 'q59', category: 'history', hasVisual: false,
+    question: 'ムーンとスペンサーの色彩調和論において、色相差が中途半端で「不調和」になるとされた領域を何と呼ぶか。',
+    options: [
+      { text: '曖昧（あいまい）領域（第1曖昧・第2曖昧）' },
+      { text: '同一（アイデンティティ）領域' },
+      { text: '類似（シミラリティ）領域' },
+      { text: '対比（コントラスト）領域' }
+    ],
+    answer: 0,
+    explanation: '同一と類似の間の<strong>「第1曖昧」</strong>、類似と対比の間の<strong>「第2曖昧」</strong>が不調和領域とされました。'
+  },
+  {
+    id: 'q60', category: 'history', hasVisual: false,
+    question: 'オストワルト表色系において、すべての色を「白色量（W）」「黒色量（B）」「純色量（C）」の3つの割合で表した基本式はどれか。',
+    options: [
+      { text: 'W ＋ B ＋ C ＝ 100（%）' },
+      { text: 'H × V ÷ C ＝ 1' },
+      { text: 'R ＋ G ＋ B ＝ 255' },
+      { text: 'L* ＋ a* ＋ b* ＝ 0' }
+    ],
+    answer: 0,
+    explanation: 'オストワルト表色系では、理想的な色表面の混色比を<strong>W ＋ B ＋ C ＝ 100%</strong>という基本式で表します。'
+  }
+];
+  </script>
+  <script>
+const STORAGE_KEY = 'aft_color_2kyu_study_v1';
+
+const state = {
+  currentTab: 'dashboard',
+  progress: {
+    answered: {},
+    bookmarks: [],
+    examHistory: []
+  },
+  practice: {
+    filterCategory: 'all',
+    blindSwatchCode: false,
+    shuffle: false,
+    queue: [],
+    currentIndex: 0,
+    selectedOption: null,
+    isRevealed: false
+  },
+  exam: {
+    status: 'setup',
+    preset: 'full',
+    questions: [],
+    answers: {},
+    flags: {},
+    currentIndex: 0,
+    remainingSec: 2700,
+    totalSec: 2700,
+    timerId: null,
+    blindSwatchCode: false
+  },
+  lab: {
+    selectedHue: 8,
+    selectedTone: 'v',
+    harmonyType: 'natural'
+  }
+};
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      state.progress.answered = parsed.answered || {};
+      state.progress.bookmarks = parsed.bookmarks || [];
+      state.progress.examHistory = parsed.examHistory || [];
+    }
+  } catch (e) {}
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress));
+  } catch (e) {}
+}
+
+function resetAllProgress() {
+  state.progress = { answered: {}, bookmarks: [], examHistory: [] };
+  saveProgress();
+  renderDashboard();
+}
+
+function switchTab(tabId, opts = {}) {
+  state.currentTab = tabId;
+  document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabId);
+  });
+  document.querySelectorAll('.view-section').forEach(sec => {
+    sec.classList.toggle('active', sec.id === `view-${tabId}`);
+  });
+
+  if (tabId === 'dashboard') {
+    renderDashboard();
+  } else if (tabId === 'practice') {
+    if (opts.filterCategory) {
+      state.practice.filterCategory = opts.filterCategory;
+      const sel = document.getElementById('practice-category-select');
+      if (sel) sel.value = opts.filterCategory;
+      buildPracticeQueue();
+    } else if (state.practice.queue.length === 0) {
+      buildPracticeQueue();
+    }
+    renderPracticeView();
+  } else if (tabId === 'exam') {
+    renderExamView();
+  } else if (tabId === 'lab') {
+    renderLabView();
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderDashboard() {
+  const totalQ = QUESTIONS_DB.length;
+  const answeredKeys = Object.keys(state.progress.answered);
+  const answeredCount = answeredKeys.length;
+  const correctCount = answeredKeys.filter(id => state.progress.answered[id].isCorrect).length;
+  const wrongIds = answeredKeys.filter(id => !state.progress.answered[id].isCorrect);
+  const accuracy = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+  const bestExam = state.progress.examHistory.reduce((max, item) => Math.max(max, item.pct), 0);
+
+  document.getElementById('stat-progress').textContent = `${answeredCount} / ${totalQ} 問`;
+  document.getElementById('stat-progress-bar').style.width = `${Math.round((answeredCount / totalQ) * 100)}%`;
+  document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
+  document.getElementById('stat-wrong-count').textContent = `${wrongIds.length} 問`;
+  document.getElementById('stat-best-exam').textContent = state.progress.examHistory.length > 0 ? `${bestExam}%` : '未受験';
+
+  const catGrid = document.getElementById('dashboard-category-grid');
+  catGrid.innerHTML = Object.values(CATEGORIES).map(cat => {
+    const catQs = QUESTIONS_DB.filter(q => q.category === cat.id);
+    const catSolved = catQs.filter(q => state.progress.answered[q.id]);
+    const catCorrect = catSolved.filter(q => state.progress.answered[q.id].isCorrect);
+    const pct = catQs.length > 0 ? Math.round((catCorrect.length / catQs.length) * 100) : 0;
+    return `
+      <div class="cat-card" onclick="switchTab('practice', { filterCategory: '${cat.id}' })">
+        <div class="cat-card-header">
+          <span class="cat-icon">${cat.icon}</span>
+          <div>
+            <h4 class="cat-title">${cat.name}</h4>
+            <span class="cat-count">全 ${catQs.length} 問（習得 ${catCorrect.length}/${catQs.length}）</span>
+          </div>
+        </div>
+        <p class="cat-desc">${cat.description}</p>
+        <div class="cat-progress-wrap">
+          <div class="cat-progress-bar">
+            <div class="cat-progress-fill" style="width: ${pct}%"></div>
+          </div>
+          <span class="cat-pct">${pct}%</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const historyContainer = document.getElementById('dashboard-exam-history');
+  if (state.progress.examHistory.length === 0) {
+    historyContainer.innerHTML = `<p class="empty-note">まだ予想模擬テストの受験記録がありません。「⏱️ 予想模擬テスト」タブから挑戦してみましょう！</p>`;
+  } else {
+    const rows = state.progress.examHistory.slice().reverse().slice(0, 5).map(item => {
+      const badge = item.passed
+        ? `<span class="badge-pass">合格圏 (70%以上)</span>`
+        : `<span class="badge-fail">あと少し</span>`;
+      return `
+        <tr>
+          <td>${item.date}</td>
+          <td>${item.modeName}</td>
+          <td><strong>${item.score} / ${item.total} 問</strong> (${item.pct}%)</td>
+          <td>${badge}</td>
+        </tr>
+      `;
+    }).join('');
+    historyContainer.innerHTML = `
+      <table class="history-table">
+        <thead>
+          <tr><th>日時</th><th>コース</th><th>スコア</th><th>判定</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+}
+
+function buildPracticeQueue() {
+  const filter = state.practice.filterCategory;
+  let list = [];
+  if (filter === 'all') {
+    list = [...QUESTIONS_DB];
+  } else if (filter === 'visual') {
+    list = QUESTIONS_DB.filter(q => q.hasVisual);
+  } else if (filter === 'wrong') {
+    list = QUESTIONS_DB.filter(q => {
+      const rec = state.progress.answered[q.id];
+      return (rec && !rec.isCorrect) || state.progress.bookmarks.includes(q.id);
+    });
+  } else if (filter === 'unanswered') {
+    list = QUESTIONS_DB.filter(q => !state.progress.answered[q.id]);
+  } else {
+    list = QUESTIONS_DB.filter(q => q.category === filter);
+  }
+  if (state.practice.shuffle) {
+    list = shuffleArray([...list]);
+  }
+  state.practice.queue = list;
+  state.practice.currentIndex = 0;
+  state.practice.selectedOption = null;
+  state.practice.isRevealed = false;
+}
+
+function onPracticeFilterChange() {
+  const sel = document.getElementById('practice-category-select');
+  const blindToggle = document.getElementById('practice-blind-toggle');
+  const shuffleToggle = document.getElementById('practice-shuffle-toggle');
+  state.practice.filterCategory = sel.value;
+  state.practice.blindSwatchCode = blindToggle.checked;
+  state.practice.shuffle = shuffleToggle.checked;
+  buildPracticeQueue();
+  renderPracticeView();
+}
+
+function togglePracticeBlindOnly() {
+  const blindToggle = document.getElementById('practice-blind-toggle');
+  state.practice.blindSwatchCode = blindToggle.checked;
+  renderPracticeView();
+}
+
+function renderPracticeView() {
+  const container = document.getElementById('practice-question-container');
+  const queue = state.practice.queue;
+  if (queue.length === 0) {
+    container.innerHTML = `
+      <div class="empty-card">
+        <h3>該当する問題がありません 🎉</h3>
+        <p>他のカテゴリーを選択して学習を続けましょう。</p>
+        <button class="btn-primary" onclick="switchTab('practice', { filterCategory: 'all' })">全問題を表示する</button>
+      </div>
+    `;
+    return;
+  }
+
+  const q = queue[state.practice.currentIndex];
+  const cat = CATEGORIES[q.category];
+  const isBookmarked = state.progress.bookmarks.includes(q.id);
+  const pastRec = state.progress.answered[q.id];
+  const showCodeNow = !state.practice.blindSwatchCode || state.practice.isRevealed;
+
+  let promptSwatchesHtml = '';
+  if (q.promptSwatches && q.promptSwatches.length > 0) {
+    promptSwatchesHtml = `
+      <div class="prompt-swatch-box">
+        ${q.promptSwatches.map(group => `
+          <div class="prompt-swatch-group">
+            <span class="prompt-swatch-label">${group.label}</span>
+            ${renderSwatchGroupHTML(group.codes, { showCode: showCodeNow, showDetail: state.practice.isRevealed, size: 'lg' })}
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  const optionsHtml = q.options.map((opt, idx) => {
+    let statusClass = '';
+    let iconBadge = `<span class="opt-num">${['ア', 'イ', 'ウ', 'エ'][idx]}</span>`;
+    if (state.practice.isRevealed) {
+      if (idx === q.answer) {
+        statusClass = 'opt-correct';
+        iconBadge = `<span class="opt-num opt-num-correct">✓</span>`;
+      } else if (idx === state.practice.selectedOption) {
+        statusClass = 'opt-wrong';
+        iconBadge = `<span class="opt-num opt-num-wrong">✕</span>`;
+      } else {
+        statusClass = 'opt-dimmed';
+      }
+    }
+    const optSwatches = opt.swatches
+      ? renderSwatchGroupHTML(opt.swatches, { showCode: showCodeNow, showDetail: state.practice.isRevealed, size: 'md' })
+      : '';
+    let displayText = opt.text;
+    if (state.practice.blindSwatchCode && !state.practice.isRevealed && opt.swatches) {
+      displayText = displayText.replace(/\b(ltg|dkg|dp|lt|sf|dk|v|b|s|d|p|g)\d{1,2}\b/g, ' [？] ');
+    }
+    return `
+      <button class="option-btn ${statusClass}" onclick="selectPracticeOption(${idx})" ${state.practice.isRevealed ? 'disabled' : ''}>
+        <div class="option-main">
+          ${iconBadge}
+          <span class="option-text">${displayText}</span>
+        </div>
+        ${optSwatches}
+      </button>
+    `;
+  }).join('');
+
+  let explanationHtml = '';
+  if (state.practice.isRevealed) {
+    const isCorrect = state.practice.selectedOption === q.answer;
+    explanationHtml = `
+      <div class="explanation-box ${isCorrect ? 'exp-correct' : 'exp-wrong'}">
+        <div class="exp-header">
+          <span class="exp-result-badge">
+            ${isCorrect ? '⭕ 正解！素晴らしい！' : `❌ 不正解（正解は「${['ア', 'イ', 'ウ', 'エ'][q.answer]}」）`}
+          </span>
+          <button class="btn-bookmark ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark('${q.id}')">
+            ${isBookmarked ? '★ 復習リスト登録済' : '☆ 復習リストに追加'}
+          </button>
+        </div>
+        <div class="exp-body">${q.explanation}</div>
+        <div class="exp-actions">
+          <button class="btn-secondary" onclick="prevPracticeQuestion()" ${state.practice.currentIndex === 0 ? 'disabled' : ''}>← 前の問題</button>
+          <button class="btn-primary" onclick="nextPracticeQuestion()">
+            ${state.practice.currentIndex < queue.length - 1 ? '次の問題へ進む →' : '最初の問題へ戻る ↺'}
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  let pastStatusBadge = `<span class="q-status-tag tag-new">未解答</span>`;
+  if (pastRec) {
+    pastStatusBadge = pastRec.isCorrect
+      ? `<span class="q-status-tag tag-ok">習得済 ✓</span>`
+      : `<span class="q-status-tag tag-ng">要復習 !</span>`;
+  }
+
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="question-meta">
+        <div class="q-meta-left">
+          <span class="q-cat-badge">${cat.icon} ${cat.name}</span>
+          ${q.hasVisual ? `<span class="q-visual-badge">🎨 配色スウォッチ問題</span>` : ''}
+          ${pastStatusBadge}
+        </div>
+        <div class="q-meta-right">
+          <button class="btn-bookmark-sm ${isBookmarked ? 'active' : ''}" onclick="toggleBookmark('${q.id}')">
+            ${isBookmarked ? '★ ブックマーク中' : '☆ ブックマーク'}
+          </button>
+          <span class="q-counter">問題 <strong>${state.practice.currentIndex + 1}</strong> / ${queue.length}</span>
+        </div>
+      </div>
+
+      <h3 class="question-title"><span class="q-id-pill">${q.id.toUpperCase()}</span> ${q.question}</h3>
+      ${promptSwatchesHtml}
+      <div class="options-list">${optionsHtml}</div>
+      ${explanationHtml}
+
+      ${!state.practice.isRevealed ? `
+        <div class="practice-nav-footer">
+          <button class="btn-secondary" onclick="prevPracticeQuestion()" ${state.practice.currentIndex === 0 ? 'disabled' : ''}>← 前の問題</button>
+          <span class="hint-text">選択肢をクリックすると即座に正誤判定と解説が表示されます</span>
+          <button class="btn-secondary" onclick="nextPracticeQuestion()">スキップ →</button>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+function selectPracticeOption(idx) {
+  if (state.practice.isRevealed) return;
+  const q = state.practice.queue[state.practice.currentIndex];
+  const isCorrect = idx === q.answer;
+  state.practice.selectedOption = idx;
+  state.practice.isRevealed = true;
+  const prev = state.progress.answered[q.id] || { count: 0, wrongCount: 0 };
+  state.progress.answered[q.id] = {
+    isCorrect: isCorrect,
+    count: prev.count + 1,
+    wrongCount: prev.wrongCount + (isCorrect ? 0 : 1),
+    lastTime: Date.now()
+  };
+  saveProgress();
+  renderPracticeView();
+}
+
+function nextPracticeQuestion() {
+  if (state.practice.currentIndex < state.practice.queue.length - 1) {
+    state.practice.currentIndex++;
+  } else {
+    state.practice.currentIndex = 0;
+  }
+  state.practice.selectedOption = null;
+  state.practice.isRevealed = false;
+  renderPracticeView();
+}
+
+function prevPracticeQuestion() {
+  if (state.practice.currentIndex > 0) {
+    state.practice.currentIndex--;
+    state.practice.selectedOption = null;
+    state.practice.isRevealed = false;
+    renderPracticeView();
+  }
+}
+
+function toggleBookmark(qId) {
+  const idx = state.progress.bookmarks.indexOf(qId);
+  if (idx >= 0) state.progress.bookmarks.splice(idx, 1);
+  else state.progress.bookmarks.push(qId);
+  saveProgress();
+  if (state.currentTab === 'practice') renderPracticeView();
+}
+
+function renderExamView() {
+  const container = document.getElementById('exam-container');
+  if (state.exam.status === 'setup') {
+    container.innerHTML = `
+      <div class="exam-setup-card">
+        <div class="exam-setup-header">
+          <h2>⏱️ 色彩検定2級 本番形式 予想模擬テスト</h2>
+          <p>本番の試験時間配分と合格基準（約70%以上正解）を想定した模擬テストです。全問解答後に分野別の弱点診断と詳細解説が表示されます。</p>
+        </div>
+        <div class="exam-preset-grid">
+          <label class="preset-card ${state.exam.preset === 'full' ? 'selected' : ''}" onclick="selectExamPreset('full')">
+            <div class="preset-badge">王道・本番想定</div>
+            <h3>総合フル予想模試</h3>
+            <div class="preset-specs">
+              <span>📝 全30問（6分野バランス出題）</span>
+              <span>⏳ 制限時間 45分</span>
+              <span>🏆 合格ライン：21問 / 30問 (70%)</span>
+            </div>
+          </label>
+          <label class="preset-card ${state.exam.preset === 'half' ? 'selected' : ''}" onclick="selectExamPreset('half')">
+            <div class="preset-badge">スキマ時間・実力診断</div>
+            <h3>ハーフ予想模試</h3>
+            <div class="preset-specs">
+              <span>📝 全15問（ランダム厳選）</span>
+              <span>⏳ 制限時間 20分</span>
+              <span>🏆 合格ライン：11問 / 15問 (73%)</span>
+            </div>
+          </label>
+          <label class="preset-card ${state.exam.preset === 'visual' ? 'selected' : ''}" onclick="selectExamPreset('visual')">
+            <div class="preset-badge">実技・配色カード特化</div>
+            <h3>視覚スウォッチ配色模試</h3>
+            <div class="preset-specs">
+              <span>🎨 全20問（配色カード・視覚問題のみ）</span>
+              <span>⏳ 制限時間 25分</span>
+              <span>🏆 合格ライン：14問 / 20問 (70%)</span>
+            </div>
+          </label>
+        </div>
+        <div class="exam-options-row">
+          <label class="checkbox-label">
+            <input type="checkbox" ${state.exam.blindSwatchCode ? 'checked' : ''} onchange="state.exam.blindSwatchCode = this.checked">
+            <span><strong>実技ブラインドモード：</strong>配色カード内のPCCS記号（lt8等）を隠し、色の見た目だけで判断する高難度モード</span>
+          </label>
+        </div>
+        <div>
+          <button class="btn-primary" onclick="startExam()">予想模擬テストを開始する ▶</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  if (state.exam.status === 'running') {
+    renderExamRunning(container);
+    return;
+  }
+  if (state.exam.status === 'result') {
+    renderExamResult(container);
+  }
+}
+
+function selectExamPreset(preset) {
+  state.exam.preset = preset;
+  renderExamView();
+}
+
+function startExam() {
+  let selectedQs = [];
+  let durationSec = 2700;
+  if (state.exam.preset === 'full') {
+    const quotas = { harmony: 8, light: 6, ud: 5, perception: 5, design: 4, history: 2 };
+    Object.keys(quotas).forEach(catId => {
+      const pool = shuffleArray(QUESTIONS_DB.filter(q => q.category === catId));
+      selectedQs.push(...pool.slice(0, quotas[catId]));
+    });
+    selectedQs = shuffleArray(selectedQs);
+    durationSec = 45 * 60;
+  } else if (state.exam.preset === 'half') {
+    selectedQs = shuffleArray([...QUESTIONS_DB]).slice(0, 15);
+    durationSec = 20 * 60;
+  } else if (state.exam.preset === 'visual') {
+    selectedQs = shuffleArray(QUESTIONS_DB.filter(q => q.hasVisual)).slice(0, 20);
+    durationSec = 25 * 60;
+  }
+
+  state.exam.questions = selectedQs;
+  state.exam.answers = {};
+  state.exam.flags = {};
+  state.exam.currentIndex = 0;
+  state.exam.totalSec = durationSec;
+  state.exam.remainingSec = durationSec;
+  state.exam.status = 'running';
+
+  if (state.exam.timerId) clearInterval(state.exam.timerId);
+  state.exam.timerId = setInterval(() => {
+    state.exam.remainingSec--;
+    const timerEl = document.getElementById('exam-timer-display');
+    if (timerEl) timerEl.textContent = formatTime(state.exam.remainingSec);
+    if (state.exam.remainingSec <= 0) finishExam();
+  }, 1000);
+
+  renderExamView();
+}
+
+function renderExamRunning(container) {
+  const qs = state.exam.questions;
+  const idx = state.exam.currentIndex;
+  const q = qs[idx];
+  const cat = CATEGORIES[q.category];
+  const answeredCount = Object.keys(state.exam.answers).length;
+  const showCode = !state.exam.blindSwatchCode;
+
+  const paletteHtml = qs.map((_, i) => {
+    const isCurrent = i === idx ? 'pal-current' : '';
+    const isAnswered = state.exam.answers[i] !== undefined ? 'pal-answered' : '';
+    const isFlagged = state.exam.flags[i] ? 'pal-flagged' : '';
+    return `<button class="pal-btn ${isCurrent} ${isAnswered} ${isFlagged}" onclick="jumpExamQuestion(${i})">${i + 1}</button>`;
+  }).join('');
+
+  let promptSwatchesHtml = '';
+  if (q.promptSwatches && q.promptSwatches.length > 0) {
+    promptSwatchesHtml = `
+      <div class="prompt-swatch-box">
+        ${q.promptSwatches.map(group => `
+          <div class="prompt-swatch-group">
+            <span class="prompt-swatch-label">${group.label}</span>
+            ${renderSwatchGroupHTML(group.codes, { showCode: showCode, size: 'lg' })}
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  const optionsHtml = q.options.map((opt, optIdx) => {
+    const isSelected = state.exam.answers[idx] === optIdx;
+    const optSwatches = opt.swatches
+      ? renderSwatchGroupHTML(opt.swatches, { showCode: showCode, size: 'md' })
+      : '';
+    let displayText = opt.text;
+    if (state.exam.blindSwatchCode && opt.swatches) {
+      displayText = displayText.replace(/\b(ltg|dkg|dp|lt|sf|dk|v|b|s|d|p|g)\d{1,2}\b/g, ' [？] ');
+    }
+    return `
+      <button class="option-btn ${isSelected ? 'opt-selected' : ''}" onclick="selectExamAnswer(${optIdx})">
+        <div class="option-main">
+          <span class="opt-num ${isSelected ? 'opt-num-selected' : ''}">${['ア', 'イ', 'ウ', 'エ'][optIdx]}</span>
+          <span class="option-text">${displayText}</span>
+        </div>
+        ${optSwatches}
+      </button>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="exam-running-layout">
+      <div class="exam-top-bar">
+        <div>解答済み: <strong>${answeredCount} / ${qs.length} 問</strong></div>
+        <div class="exam-timer-box">⏳ 残り時間: <strong id="exam-timer-display">${formatTime(state.exam.remainingSec)}</strong></div>
+        <button class="btn-submit-exam" onclick="finishExam()">採点・提出する ✓</button>
+      </div>
+      <div class="exam-palette-bar">
+        <span class="pal-label">問題番号パレット（クリックで移動）：</span>
+        <div class="pal-grid">${paletteHtml}</div>
+      </div>
+      <div class="question-card">
+        <div class="question-meta">
+          <div class="q-meta-left">
+            <span class="q-cat-badge">第 ${idx + 1} 問 / ${qs.length}</span>
+            <span class="q-cat-badge">${cat.icon} ${cat.name}</span>
+          </div>
+          <label class="checkbox-label">
+            <input type="checkbox" ${state.exam.flags[idx] ? 'checked' : ''} onchange="toggleExamFlag(${idx}, this.checked)">
+            <span>🚩 後で見直す</span>
+          </label>
+        </div>
+        <h3 class="question-title">${q.question}</h3>
+        ${promptSwatchesHtml}
+        <div class="options-list">${optionsHtml}</div>
+        <div class="exam-question-nav">
+          <button class="btn-secondary" onclick="jumpExamQuestion(${idx - 1})" ${idx === 0 ? 'disabled' : ''}>← 前の問題</button>
+          ${idx < qs.length - 1
+            ? `<button class="btn-primary" onclick="jumpExamQuestion(${idx + 1})">次の問題 →</button>`
+            : `<button class="btn-submit-exam" onclick="finishExam()">全問終了・採点する ✓</button>`
+          }
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function selectExamAnswer(optIdx) {
+  state.exam.answers[state.exam.currentIndex] = optIdx;
+  renderExamView();
+}
+
+function toggleExamFlag(idx, checked) {
+  state.exam.flags[idx] = checked;
+  renderExamView();
+}
+
+function jumpExamQuestion(idx) {
+  if (idx < 0 || idx >= state.exam.questions.length) return;
+  state.exam.currentIndex = idx;
+  renderExamView();
+}
+
+function finishExam() {
+  if (state.exam.timerId) {
+    clearInterval(state.exam.timerId);
+    state.exam.timerId = null;
+  }
+  const qs = state.exam.questions;
+  let correct = 0;
+  qs.forEach((q, idx) => {
+    const userAns = state.exam.answers[idx];
+    const isOk = userAns === q.answer;
+    if (isOk) correct++;
+    const prev = state.progress.answered[q.id] || { count: 0, wrongCount: 0 };
+    state.progress.answered[q.id] = {
+      isCorrect: isOk,
+      count: prev.count + 1,
+      wrongCount: prev.wrongCount + (isOk ? 0 : 1),
+      lastTime: Date.now()
+    };
+  });
+
+  const pct = Math.round((correct / qs.length) * 100);
+  const passed = pct >= 70;
+  const modeNames = { full: '総合フル模試(30問)', half: 'ハーフ模試(15問)', visual: '視覚スウォッチ模試(20問)' };
+  const now = new Date();
+  const dateStr = `${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+  state.progress.examHistory.push({
+    date: dateStr,
+    modeName: modeNames[state.exam.preset] || '模試',
+    score: correct,
+    total: qs.length,
+    pct: pct,
+    passed: passed
+  });
+  saveProgress();
+  state.exam.status = 'result';
+  renderExamView();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderExamResult(container) {
+  const qs = state.exam.questions;
+  let correct = 0;
+  const catStats = {};
+  Object.keys(CATEGORIES).forEach(catId => { catStats[catId] = { total: 0, correct: 0 }; });
+  qs.forEach((q, idx) => {
+    const isOk = state.exam.answers[idx] === q.answer;
+    if (isOk) correct++;
+    catStats[q.category].total++;
+    if (isOk) catStats[q.category].correct++;
+  });
+  const pct = Math.round((correct / qs.length) * 100);
+  const passed = pct >= 70;
+  const passNeeded = Math.ceil(qs.length * 0.7);
+
+  const catBreakdownHtml = Object.values(CATEGORIES).filter(cat => catStats[cat.id].total > 0).map(cat => {
+    const st = catStats[cat.id];
+    const cPct = Math.round((st.correct / st.total) * 100);
+    return `
+      <div class="result-cat-row">
+        <span class="result-cat-name">${cat.icon} ${cat.shortName}</span>
+        <div class="result-cat-bar-wrap">
+          <div class="result-cat-bar ${cPct >= 70 ? 'bar-good' : 'bar-weak'}" style="width: ${cPct}%"></div>
+        </div>
+        <span class="result-cat-score">${st.correct}/${st.total} (${cPct}%)</span>
+      </div>
+    `;
+  }).join('');
+
+  const reviewListHtml = qs.map((q, idx) => {
+    const userAns = state.exam.answers[idx];
+    const isOk = userAns === q.answer;
+    const userChoiceText = userAns !== undefined ? `${['ア', 'イ', 'ウ', 'エ'][userAns]}：${q.options[userAns].text}` : '未回答';
+    const correctChoiceText = `${['ア', 'イ', 'ウ', 'エ'][q.answer]}：${q.options[q.answer].text}`;
+    const correctSwatches = q.options[q.answer].swatches
+      ? renderSwatchGroupHTML(q.options[q.answer].swatches, { showCode: true, showDetail: true, size: 'sm' })
+      : '';
+    return `
+      <div class="review-item">
+        <div class="review-item-header">
+          <span class="rev-badge ${isOk ? 'rev-badge-ok' : 'rev-badge-ng'}">${isOk ? '⭕ 正解' : '❌ 不正解'}</span>
+          <span class="rev-q-num">第${idx + 1}問 (${CATEGORIES[q.category].shortName})</span>
+        </div>
+        <p class="rev-question">${q.question}</p>
+        <div class="rev-choices-compare">
+          <div>あなたの解答：<strong>${userChoiceText}</strong></div>
+          <div>正解：<strong>${correctChoiceText}</strong> ${correctSwatches}</div>
+        </div>
+        <div class="rev-explanation">${q.explanation}</div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="exam-result-card">
+      <div class="result-hero ${passed ? 'hero-pass' : 'hero-fail'}">
+        <div class="result-badge-lg">${passed ? '🎉 合格基準達成！（合格圏）' : '💪 あと少しで合格圏！'}</div>
+        <div><span class="score-num">${pct}</span> 点 / 100点換算</div>
+        <p>正解数：<strong>${correct} / ${qs.length} 問</strong>（合格ライン目安：${passNeeded}問［70%］以上）</p>
+        <div class="result-hero-actions">
+          <button class="btn-primary" onclick="state.exam.status='setup'; renderExamView();">別の模擬テストに挑戦する</button>
+          <button class="btn-secondary" onclick="switchTab('practice', { filterCategory: 'wrong' })">間違えた問題を復習する →</button>
+        </div>
+      </div>
+      <div class="result-section">
+        <h3>📊 分野別 正答率診断</h3>
+        <div>${catBreakdownHtml}</div>
+      </div>
+      <div class="result-section">
+        <h3>📝 全${qs.length}問の解答・解説振り返り</h3>
+        <div class="review-list">${reviewListHtml}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderLabView() {
+  const hueNum = state.lab.selectedHue;
+  const toneCode = state.lab.selectedTone;
+  const hueObj = PCCS_HUES[hueNum];
+  const currentCode = `${toneCode}${hueNum}`;
+  const currentColor = getPCCSColor(currentCode);
+
+  const size = 340;
+  const cx = size / 2;
+  const cy = size / 2;
+  const rOuter = 132;
+  const harmonyInfo = computeHarmonyCards(hueNum, toneCode, state.lab.harmonyType);
+  const highlightHues = harmonyInfo.cards.map(c => getPCCSColor(c).hueNum).filter(Boolean);
+
+  let wheelNodes = '';
+  for (let i = 1; i <= 24; i++) {
+    const angleDeg = (i - 8) * 15 - 90;
+    const rad = (angleDeg * Math.PI) / 180;
+    const x = cx + rOuter * Math.cos(rad);
+    const y = cy + rOuter * Math.sin(rad);
+    const chipColor = getPCCSColor(`${toneCode}${i}`);
+    const isSelected = i === hueNum;
+    const isPartner = highlightHues.includes(i) && !isSelected;
+    const rCircle = isSelected ? 19 : (isPartner ? 17 : 14);
+    const stroke = isSelected ? '#111827' : (isPartner ? '#2563EB' : '#FFFFFF');
+    const strokeW = isSelected ? 3.5 : (isPartner ? 3 : 1.5);
+    wheelNodes += `
+      <g onclick="selectLabHue(${i})" style="cursor:pointer;">
+        <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rCircle}" fill="${chipColor.hex}" stroke="${stroke}" stroke-width="${strokeW}" />
+        <text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="${chipColor.isDark ? '#FFF' : '#111'}">${i}</text>
+      </g>
+    `;
+  }
+
+  let harmonyLines = '';
+  if (highlightHues.length >= 2) {
+    const pts = highlightHues.map(hIdx => {
+      const angleDeg = (hIdx - 8) * 15 - 90;
+      const rad = (angleDeg * Math.PI) / 180;
+      return `${(cx + (rOuter - 18) * Math.cos(rad)).toFixed(1)},${(cy + (rOuter - 18) * Math.sin(rad)).toFixed(1)}`;
+    });
+    harmonyLines = `<polygon points="${pts.join(' ')}" fill="rgba(37, 99, 235, 0.12)" stroke="#2563EB" stroke-width="2.5" stroke-dasharray="4 2" />`;
+  }
+
+  const wheelSvg = `
+    <svg viewBox="0 0 ${size} ${size}" class="pccs-wheel-svg">
+      <circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="none" stroke="#E2E8F0" stroke-width="1" />
+      ${harmonyLines}
+      ${wheelNodes}
+      <text x="${cx}" y="${cy - 8}" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">${hueObj.code}</text>
+      <text x="${cx}" y="${cy + 10}" text-anchor="middle" font-size="12" fill="#64748B">${hueObj.name}</text>
+      <text x="${cx}" y="${cy + 26}" text-anchor="middle" font-size="12" fill="#94A3B8">マンセル: ${hueObj.munsell}</text>
+    </svg>
+  `;
+
+  const toneButtonsHtml = Object.values(PCCS_TONES).map(t => {
+    const c = getPCCSColor(`${t.code}${hueNum}`);
+    const isSel = t.code === toneCode;
+    return `
+      <button class="tone-circle-btn ${isSel ? 'tone-selected' : ''}"
+        style="background:${c.hex}; color:${c.isDark ? '#FFF' : '#111'}; grid-column:${t.x}; grid-row:${Math.round(t.y * 2)};"
+        onclick="selectLabTone('${t.code}')">
+        <span class="t-code">${t.code}</span>
+        <span class="t-mod">${t.modifier}</span>
+      </button>
+    `;
+  }).join('');
+
+  document.getElementById('lab-container').innerHTML = `
+    <div class="lab-grid">
+      <div class="lab-panel">
+        <h3>1. PCCS 24色相環（クリックで基準色相を変更）</h3>
+        <p class="lab-hint">真上が最も高明度な「8:Y（黄）」、真下が最も低明度な「20:V（青紫）」です。</p>
+        <div class="wheel-wrap">${wheelSvg}</div>
+      </div>
+      <div class="lab-panel">
+        <h3>2. PCCS 12トーン図（クリックでトーンを変更）</h3>
+        <p class="lab-hint">純色（v）に白を混ぜた明清色（p, lt, b）、黒を混ぜた暗清色（dp, dk）、灰色を混ぜた中間色。</p>
+        <div class="tone-map-grid">${toneButtonsHtml}</div>
+        <div class="selected-color-detail">
+          <div class="detail-chip" style="background:${currentColor.hex}; color:${currentColor.isDark ? '#FFF' : '#111'}">
+            <strong>${currentCode}</strong>
+          </div>
+          <div class="detail-meta">
+            <div><strong>色名：</strong>${currentColor.name}</div>
+            <div><strong>PCCS色相：</strong>${hueObj.code}（${hueObj.name}） / マンセル近似：<code>${hueObj.munsell}</code></div>
+            <div><strong>トーン分類：</strong>${PCCS_TONES[toneCode].category}（${PCCS_TONES[toneCode].name}）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="lab-harmony-panel">
+      <h3>3. 選択した色（${currentCode}）を基準にした配色技法シミュレーター</h3>
+      <div class="harmony-tabs">
+        ${[
+          { id: 'natural', label: 'ナチュラルハーモニー' },
+          { id: 'complex', label: 'コンプレックスハーモニー' },
+          { id: 'camaieu', label: 'フォカマイユ' },
+          { id: 'split', label: 'スプリットコンプリメンタリー' },
+          { id: 'triad', label: 'トライアド (3等分)' },
+          { id: 'tetrad', label: 'テトラード (4等分)' },
+          { id: 'toneOnTone', label: 'トーンオントーン' }
+        ].map(tab => `
+          <button class="harmony-tab-btn ${state.lab.harmonyType === tab.id ? 'active' : ''}" onclick="selectLabHarmony('${tab.id}')">
+            ${tab.label}
+          </button>
+        `).join('')}
+      </div>
+      <div class="harmony-showcase">
+        <div>${renderSwatchGroupHTML(harmonyInfo.cards, { showCode: true, showDetail: true, size: 'xl' })}</div>
+        <div class="harmony-desc-box">
+          <h4>${harmonyInfo.title}</h4>
+          <p>${harmonyInfo.desc}</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function selectLabHue(h) { state.lab.selectedHue = h; renderLabView(); }
+function selectLabTone(t) { state.lab.selectedTone = t; renderLabView(); }
+function selectLabHarmony(type) { state.lab.harmonyType = type; renderLabView(); }
+function wrapHue(h) { return ((h - 1 + 24) % 24) + 1; }
+
+function computeHarmonyCards(hueNum, toneCode, type) {
+  const neighborHue = wrapHue(hueNum + 2);
+  const isBaseHigher = V_BASE_LIGHTNESS[hueNum] >= V_BASE_LIGHTNESS[neighborHue];
+  if (type === 'natural') {
+    const c1 = `${isBaseHigher ? 'lt' : 'd'}${hueNum}`;
+    const c2 = `${isBaseHigher ? 'd' : 'lt'}${neighborHue}`;
+    return {
+      title: `ナチュラルハーモニー（${c1} × ${c2}）`,
+      cards: [c1, c2],
+      desc: `黄色（8:Y）に近い方の色相を高明度トーン（lt）、青紫（20:V）に近い方の色相を低明度トーン（d）にした自然調和配色です。`
+    };
+  }
+  if (type === 'complex') {
+    const c1 = `${isBaseHigher ? 'd' : 'lt'}${hueNum}`;
+    const c2 = `${isBaseHigher ? 'lt' : 'd'}${neighborHue}`;
+    return {
+      title: `コンプレックスハーモニー（${c1} × ${c2}）`,
+      cards: [c1, c2],
+      desc: `自然の明度順列を逆転させ、黄色（8:Y）に近い側を暗いトーン（d）、青紫（20:V）に近い側を明るいトーン（lt）にした個性的な配色です。`
+    };
+  }
+  if (type === 'camaieu') {
+    const f1 = `${toneCode}${hueNum}`;
+    const f2 = `${toneCode}${wrapHue(hueNum + 2)}`;
+    return {
+      title: `フォカマイユ配色（${f1} × ${f2}）`,
+      cards: [f1, f2],
+      desc: `同一トーン（${toneCode}）で類似色相（色相差2）を組み合わせた上品な配色です。`
+    };
+  }
+  if (type === 'split') {
+    const comp = wrapHue(hueNum + 12);
+    const s1 = wrapHue(comp - 1);
+    const s2 = wrapHue(comp + 1);
+    return {
+      title: `スプリットコンプリメンタリー（色相 ${hueNum} - ${s1} - ${s2}）`,
+      cards: [`${toneCode}${hueNum}`, `${toneCode}${s1}`, `${toneCode}${s2}`],
+      desc: `基準色（${hueNum}番）の補色（${comp}番）の両隣（${s1}番・${s2}番）を組み合わせた分裂補色3色配色です。`
+    };
+  }
+  if (type === 'triad') {
+    const h2 = wrapHue(hueNum + 8);
+    const h3 = wrapHue(hueNum + 16);
+    return {
+      title: `トライアド（色相差8：${hueNum} - ${h2} - ${h3}）`,
+      cards: [`${toneCode}${hueNum}`, `${toneCode}${h2}`, `${toneCode}${h3}`],
+      desc: `24色相環を3等分（8色相間隔）して正三角形を結ぶ3色配色です。`
+    };
+  }
+  if (type === 'tetrad') {
+    const h2 = wrapHue(hueNum + 6);
+    const h3 = wrapHue(hueNum + 12);
+    const h4 = wrapHue(hueNum + 18);
+    return {
+      title: `テトラード（色相差6：${hueNum} - ${h2} - ${h3} - ${h4}）`,
+      cards: [`${toneCode}${hueNum}`, `${toneCode}${h2}`, `${toneCode}${h3}`, `${toneCode}${h4}`],
+      desc: `24色相環を4等分（6色相間隔）して正方形を結ぶ4色配色です。`
+    };
+  }
+  return {
+    title: `トーンオントーン配色（lt${hueNum} × dk${hueNum}）`,
+    cards: [`lt${hueNum}`, `dk${hueNum}`],
+    desc: `同一色相（${PCCS_HUES[hueNum].code}）の中で明度差を大きくとった濃淡2色配色です。`
+  };
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function formatTime(sec) {
+  const s = Math.max(0, sec);
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadProgress();
+  buildPracticeQueue();
+  renderDashboard();
+});
+  </script>
+</body>
+</html>
